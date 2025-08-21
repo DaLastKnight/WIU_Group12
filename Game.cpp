@@ -127,6 +127,8 @@ void Game::startingScreen()
                 system("cls");
                 std::cout << "\nStart Game?\n";
                 if (confirmSelection()) {
+                    diffselect.selectDifficulty();
+                    diffselect.setDifficulty();
                     startGame();
                     std::cout << "\nYou have started the game\n";
                     return; // Exit the function to start the game
