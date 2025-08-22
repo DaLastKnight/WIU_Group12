@@ -58,6 +58,18 @@ void Shop::interactShop()
 
     while (true) {
 
+        system("cls");
+
+        std::cout << "      . .                     \n";
+        std::cout << "        .:                    \n";
+        std::cout << "       __[]_________          \n";
+        std::cout << "      /\\____________\\       \n";
+        std::cout << "      ||   |Shop|   |         \n";
+        std::cout << "      ||     __     |         \n";
+        std::cout << "      || '' | .| '' |         \n";
+        std::cout << "      ||    |  |    |         \n";
+        std::cout << "    `'``````''`````''``       \n";
+
         std::cout << "\nWelcome to the General Shop!\n";
         std::cout << "\nWhat would you like to browse today?\n";
 
@@ -107,7 +119,6 @@ void Shop::interactShop()
             return; // Exit the function to leave the shop
         default:
             // Ignore invalid key presses
-			system("cls");
             break;
         }
     }
