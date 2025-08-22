@@ -1,51 +1,7 @@
+#include "Shop.h"
 #include <iostream>
 #include <conio.h>
 #include <cstdlib>
-#include "Gold.h"
-#include "Shop.h"
-
-Shop::Shop(Gold* goldPtr)
-{
-    this->goldPtr = goldPtr;
-    // int randomNumber = 0
-    
-    // for (int i = 0; i < 3; i++)
-    // {
-    //      std::mt19937 generator(std::random_device{}());
-    //      std::uniform_int_distribution<int> distr(1, 3);
-    //      randomNumber = distr(generator);
-    // 
-    //      switch (i)
-    //      {
-    //      case 1:
-    //          weaponPtr[i] = new Sword();
-    //          break;
-    //      case 2:
-    //          weaponPtr[i] = new Dagger();
-    //          break;
-    //      case 3:
-    //          weaponPtr[i] = new Bow();
-    //          break;
-    //      default:
-    //          weaponPtr[i] = nullptr;
-    //          break;
-    //      }
-    // }
-    //
-    // Repeat the above for the other different arrays of items
-}
-
-Shop::~Shop()
-{
-    // for (int i = 0; i < 3; i++)
-    // {
-    //     delete weaponPtr[i];
-    // }
-    //
-    // Repeat for the other different arrays of items
-    // 
-    // delete goldPtr;
-}
 
 void Shop::handlePurchase(const std::string& itemType)
 {
@@ -75,7 +31,6 @@ void Shop::handlePurchase(const std::string& itemType)
             break;
         case 'z':
             if (currentSelection == 0) { // Yes
-                goldPtr->setTotalGold(-100);
                 system("cls");
                 std::cout << "\nYou have bought a random " << itemType << "!\n";
                 std::cout << "Returning to shop menu...\n";
@@ -93,11 +48,6 @@ void Shop::handlePurchase(const std::string& itemType)
             break; // Ignore invalid keys
         }
     }
-}
-
-void Shop::showChoices(const std::string& itemType)
-{
-
 }
 
 void Shop::interactShop()
@@ -129,8 +79,6 @@ void Shop::interactShop()
         std::cout << ((currentSelection == 2) ? "> " : "  ") << "Potion\n";
         std::cout << ((currentSelection == 3) ? "> " : "  ") << "Miscellaneous\n";
         std::cout << ((currentSelection == 4) ? "> " : "  ") << "Exit Shop\n";
-
-        std::cout << "\nCurrent amount of gold: " << goldPtr->getTotalGold() << '\n';
 
         std::cout << "\nUse W/S to navigate, Z to select, X to exit.\n";
 

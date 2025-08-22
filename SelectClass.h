@@ -12,5 +12,6 @@ public:
 	SelectClass() : player(nullptr) {}
 
 	void chooseClass();
+
 };
 

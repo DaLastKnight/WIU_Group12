@@ -9,4 +9,3 @@ public:
 	~PlayerTile();
 	void move(int maxGridWidth, int maxGridHeight);
 };
-

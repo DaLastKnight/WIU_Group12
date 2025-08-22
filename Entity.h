@@ -26,5 +26,7 @@ public:
 	int getSpeed() const;
 
 	char getType() const;
+
+	virtual void attacking() = 0;
 };
 
