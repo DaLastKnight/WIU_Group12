@@ -66,9 +66,8 @@ void Player::setClassStats(PlayerClass* playerclass)
 
 void Player::useSkill(PlayerClass* playerskill)
 {
-	std::cout << "You used a skill of whatever is called\n";
 	specialty = playerskill;
-	playerskill->skill(*this, 12);
+	playerskill->skill(*this, playerskill->bonusValue());
 }
 
 void Player::attacking()

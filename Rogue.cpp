@@ -5,6 +5,11 @@ Rogue::Rogue()
 {
 }
 
+int Rogue::bonusValue() const
+{
+    return 3;
+}
+
 void Rogue::skill(Entity& entity, int bonusVal)
 {
     std::cout << "You have casted Quick Blade\n";

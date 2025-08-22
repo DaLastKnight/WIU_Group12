@@ -5,6 +5,11 @@ Wizard::Wizard()
 {
 }
 
+int Wizard::bonusValue() const
+{
+    return 4;
+}
+
 void Wizard::skill(Entity& entity, int bonusVal)
 {
     std::cout << "You have casted Greater Fireball\n";
