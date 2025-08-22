@@ -56,74 +56,19 @@ void Player::viewCurrentStats()
 	std::cout << "Attack: " << getAttack() << "\n";
 	std::cout << "Defense: " << getDefense() << "\n";
 	std::cout << "Speed: " << getSpeed() << "\n";
-	std::cout << "Row: " << pos.getRow() << "\n";
-	std::cout << "Column: " << pos.getCol() << "\n";
 }
 
-void Player::move(char table[20][20])
+void Player::setClassStats(PlayerClass* playerclass)
 {
-	std::cout << "Enter WASD to move: ";
-	std::cin >> input;
-
-	// Gets the current Position
-	int row = pos.getRow();
-	int col = pos.getCol();
-	// Sets the old Position info into the new one
-	int newRow = row, newCol = col;
-
-	// Moves according to the input
-	switch (input) {
-	case 'W':
-		newRow--; break;
-	case 'A':
-		newCol--; break;
-	case 'S':
-		newRow++; break;
-	case 'D':
-		newCol++; break;
-	default:
-		std::cout << (input) << std::endl;
-		std::cout << "Turn forfeited.\n";
-		return;
-	}
-
-	std::cout << (input) << std::endl;
-
-	// Checks if Player is going outside the map
-	/*if (newRow < 0 || newRow >= 20 || newCol < 0 || newCol >= 20) {
-		std::cout << "Turn forfeited.\n";
-		return;
-	}*/
-
-	// Sets the new Position into the World
-	char newPosition = table[newRow][newCol];
-
-	// Checks which Entity it's colliding
-	//for (int i = 1; i < 6; i++) {
-	//    if (gameObjects[i] != nullptr) {
-	//        // Get each Entities symbol to check
-	//        char objType = gameObjects[i]->getType();
-
-	//        // Checks if the Pacmans Position is the same with any other Entity
-	//        if (gameObjects[i]->getPosition().getRow() == newRow && gameObjects[i]->getPosition().getCol() == newCol) {
-	//            // Enter batttle function
-	//        }
-	//    }
-	//}
-
-	// Clears the old position
-	table[row][col] = ' ';
-
-	// Moves to the new Position
-	pos.setRow(newRow);
-	pos.setCol(newCol);
-	table[newRow][newCol] = getType();
+	specialty = playerclass;
+	playerclass->setClassStats(*this);
 }
 
-void Player::useSkill()
+void Player::useSkill(PlayerClass* playerskill)
 {
 	std::cout << "You used a skill of whatever is called\n";
-	skill(12);
+	specialty = playerskill;
+	playerskill->skill(*this, 12);
 }
 
 void Player::attacking()
@@ -215,7 +160,7 @@ void Player::attacking()
 				system("cls");
 				std::cout << "\nYou chose to use Skill\n";
 				if (confirmSelection()) {
-					useSkill();
+					useSkill(specialty);
 					std::cout << "\nYou skilled\n";
 					return;
 				}

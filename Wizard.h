@@ -1,12 +1,12 @@
 #pragma once
-#include "Player.h"
-class Wizard : public Player
+#include "PlayerClass.h"
+class Wizard : public PlayerClass
 {
 public:
 	Wizard();
-	Wizard(int hp, int atk, int def, int spd) : Player() {};
+	Wizard(int hp, int atk, int def, int spd) : PlayerClass() {};
 
-	void skill(int bonusVal) override;
-	void setClassStats() override;
+	void skill(Entity& entity, int bonusVal) override;
+	void setClassStats(Entity& entity) override;
 };
 

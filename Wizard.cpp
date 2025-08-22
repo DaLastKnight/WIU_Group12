@@ -3,16 +3,15 @@
 
 Wizard::Wizard()
 {
-    setClassStats();
 }
 
-void Wizard::skill(int bonusVal)
+void Wizard::skill(Entity& entity, int bonusVal)
 {
     std::cout << "You have casted Greater Fireball\n";
-    int totalDamage = getAttack() + bonusVal;
+    int totalDamage = entity.getAttack() + bonusVal;
 }
 
-void Wizard::setClassStats()
+void Wizard::setClassStats(Entity& entity)
 {
-    setStats(50, 35, 2, 7);
+    entity.setStats(75, 25, 4, 9);
 }

@@ -3,17 +3,16 @@
 
 Warrior::Warrior()
 {
-    setClassStats();
 }
 
-void Warrior::skill(int bonusVal)
+void Warrior::skill(Entity& entity, int bonusVal)
 {
     std::cout << "You have casted Aura Blade\n";
-    int totalDamage = getAttack() + bonusVal;
+    int totalDamage = entity.getAttack() + bonusVal;
 }
 
-void Warrior::setClassStats()
+void Warrior::setClassStats(Entity& entity)
 {
-    setStats(150, 25, 5, 12);
+    entity.setStats(100, 20, 8, 12);
 }
 

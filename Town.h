@@ -17,6 +17,7 @@ private:
 	Shop shop;
 	SelectClass selectorClass;
 	Portal portal;
+	Player p;
 
 public:
 	Town();

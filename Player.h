@@ -1,9 +1,12 @@
 #pragma once
 #include "Entity.h"
+#include "PlayerClass.h"
 
 class Player : public Entity
 {
 private:
+	PlayerClass* specialty;
+
 	char input;
 
 	bool confirmSelection();
@@ -12,14 +15,10 @@ public:
 	Player(int row, int col) : Entity(row, col, 'P', health, attack, defense, speed) {}
 
 	void viewCurrentStats();
-	void useSkill();
+	void setClassStats(PlayerClass* playerclass);
+	void useSkill(PlayerClass* playerskill);
 
 	void attacking() override;
 	void defending();
-
-	void move(char table[20][20]);
-
-	virtual void skill(int bonusVal) = 0;
-	virtual void setClassStats() = 0;
 };
 

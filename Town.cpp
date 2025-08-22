@@ -113,7 +113,7 @@ void Town::checkInteraction()
 				else if (tileList[i]->getTileSymbol() == 'C')
 				{
 					isInMenu = true;
-					selectorClass.chooseClass();
+					selectorClass.chooseClass(p);
 					isInMenu = false;
 					loopWorld();
 				}

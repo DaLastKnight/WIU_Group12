@@ -1,12 +1,12 @@
 #pragma once
-#include "Player.h"
-class Warrior : public Player
+#include "PlayerClass.h"
+class Warrior : public PlayerClass
 {
 public:
 	Warrior();
-	Warrior(int hp, int atk, int def, int spd) : Player() {};
+	Warrior(int hp, int atk, int def, int spd) : PlayerClass() {};
 
-	void skill(int bonusVal) override;
-	void setClassStats() override;
+	void skill(Entity& entity, int bonusVal) override;
+	void setClassStats(Entity& entity) override;
 };
 

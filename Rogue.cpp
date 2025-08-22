@@ -3,16 +3,15 @@
 
 Rogue::Rogue()
 {
-    setClassStats();
 }
 
-void Rogue::skill(int bonusVal)
+void Rogue::skill(Entity& entity, int bonusVal)
 {
     std::cout << "You have casted Quick Blade\n";
-    int totalDamage = getAttack() + bonusVal;
+    int totalDamage = entity.getAttack() + bonusVal;
 }
 
-void Rogue::setClassStats()
+void Rogue::setClassStats(Entity& entity)
 {
-    setStats(80, 20, 3, 15);
+    entity.setStats(90, 18, 6, 16);
 }

@@ -56,7 +56,7 @@ Player* SelectClass::getPlayer()
 }
 
 // This is the main class selection menu, also using the new control scheme.
-void SelectClass::chooseClass() {
+void SelectClass::chooseClass(Player& player) {
     int currentSelection = 0;
     char keyInput;
     const int numOptions = 5; // Total number of menu options
@@ -93,9 +93,9 @@ void SelectClass::chooseClass() {
                 std::cout << "Assigned stats: HP: 100, ATK: 25, DEF: 5, SPD: 12.\n";
                 if (confirmSelection()) {
                     // Logic to save the selected class
-                    delete player;
-                    player = new Warrior();
-                    player->setClassStats();
+                    delete pc;
+                    pc = new Warrior();
+                    player.setClassStats(pc);
                     std::cout << "\nWarrior/Fighter has been selected. Starting your adventure...\n";
                     return; // Exit the function to start the game
                 }
@@ -105,9 +105,9 @@ void SelectClass::chooseClass() {
                 std::cout << "\nYou have chosen Thief/Rogue.\n";
                 std::cout << "Assigned stats: HP: 80, ATK: 20, DEF: 3, SPD: 15.\n";
                 if (confirmSelection()) {
-                    delete player;
-                    player = new Rogue();
-                    player->setClassStats();
+                    delete pc;
+                    pc = new Rogue();
+                    player.setClassStats(pc);
                     std::cout << "\nThief/Rogue has been selected. Starting your adventure...\n";
                     return;
                 }
@@ -117,9 +117,9 @@ void SelectClass::chooseClass() {
                 std::cout << "\nYou have chosen Mage/Wizard.\n";
                 std::cout << "Assigned stats: HP: 50, ATK: 35, DEF: 2, SPD: 7.\n";
                 if (confirmSelection()) {
-                    delete player;
-                    player = new Wizard();
-                    player->setClassStats();
+                    delete pc;
+                    pc = new Wizard();
+                    player.setClassStats(pc);
                     std::cout << "\nMage/Wizard has been selected. Starting your adventure...\n";
                     return;
                 }
@@ -129,9 +129,9 @@ void SelectClass::chooseClass() {
                 std::cout << "\nYou have chosen Cleric/Priest.\n";
                 std::cout << "Assigned stats: HP: 65, ATK: 15, DEF: 7, SPD: 10.\n";
                 if (confirmSelection()) {
-                    delete player;
-                    player = new Cleric();
-                    player->setClassStats();
+                    delete pc;
+                    pc = new Cleric();
+                    player.setClassStats(pc);
                     std::cout << "\nCleric/Priest has been selected. Starting your adventure..\n";
                     return;
                 }
