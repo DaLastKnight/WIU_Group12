@@ -5,7 +5,8 @@ int main()
 {
 	Game* gamePtr = new Game;
 	gamePtr->initGame();
-	gamePtr->startGame();
+	gamePtr->startingScreen();
 	delete gamePtr;
 	return 0;
+
 }
