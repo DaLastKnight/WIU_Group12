@@ -3,8 +3,10 @@
 #include "Tile.h"
 #include "PlayerTile.h"
 #include "Shop.h"
-#include "selectClass.h"
+#include "SelectClass.h"
 #include "Portal.h"
+
+class Game;
 
 class Town : public World
 {
@@ -12,18 +14,20 @@ private:
 	bool isInMenu;
 	bool hasTeleported;
 	int maxTiles;
+	Game* gamePtr;
 	Tile** tileList;
 	PlayerTile* playerTilePtr;
-	Shop shop;
-	selectClass selectorClass;
+	Shop* shopPtr;
+	SelectClass selectorClass;
 	Portal portal;
 
 public:
-	Town();
+	Town(Game* ptrGame);
 	~Town();
 	void initWorld();
 	void checkInteraction();
 	void updateTilePositions();
 	void loopWorld();
+	void setDefault();
 };
 

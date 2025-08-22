@@ -1,18 +1,22 @@
 #include <conio.h>
+#include "Game.h"
 #include "Town.h"
 #include "Tile.h"
 #include "PlayerTile.h"
 #include "Shop.h"
-#include "selectClass.h"
+#include "SelectClass.h"
 #include "Portal.h"
 
-Town::Town()
+Town::Town(Game* ptrGame)
 {
+	worldType = "Town";
 	isInMenu = false;
 	hasTeleported = false;
 	gridWidth = 10;
 	gridHeight = 10;
-	worldType = "Town";
+
+	gamePtr = ptrGame;
+	shopPtr = new Shop(gamePtr->getGoldPtr());
 	world = new char*[gridWidth];
 
 	for (int i = 0; i < gridWidth; i++)
@@ -40,6 +44,8 @@ Town::Town()
 
 Town::~Town()
 {
+	delete gamePtr;
+	
 	for (int i = 0; i < maxTiles; i++)
 	{
 		delete tileList[i];
@@ -98,15 +104,12 @@ void Town::checkInteraction()
 			{
 				if (tileList[i]->getTileSymbol() == 'T')
 				{
-					isInMenu = true;
-					portal.teleport(worldType);
-					isInMenu = false;
-					loopWorld();
+					gamePtr->switchWorld(portal.teleport(worldType));
 				}
 				else if (tileList[i]->getTileSymbol() == 'S')
 				{
 					isInMenu = true;
-					shop.interactShop();
+					shopPtr->interactShop();
 					isInMenu = false;
 					loopWorld();
 				}
@@ -168,4 +171,9 @@ void Town::loopWorld()
 		printWorld();
 		checkInteraction();
 	}
+}
+
+void Town::setDefault()
+{
+	playerTilePtr->setTilePosition(gridWidth, gridHeight, 4, 4);
 }
