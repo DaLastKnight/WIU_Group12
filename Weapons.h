@@ -16,4 +16,6 @@ public:
     int getPrice() const;
     int getBaseAttack() const;
     int getTier() const;
+
+    virtual void weaponSprite(int tier) = 0;
 };

@@ -26,3 +26,24 @@ Dagger::Dagger(int tier)
         price = 500;
     }
 }
+
+void Dagger::weaponSprite(int tier)
+{
+    if (tier == 1) {
+        std::cout << "    ____________________  \n";
+        std::cout << "   |/---\\|`---.....__-`  \n";
+        std::cout << "                          \n";
+    }
+    else if (tier == 2) {
+        std::cout << "    ____________________________  \n";
+        std::cout << "   |/-----\\|`---....._________-`  \n";
+        std::cout << "                                  \n";
+    }
+    else if (tier == 3) {
+        std::cout << "                                   \n";
+        std::cout << "    ____________________________   \n";
+        std::cout << "   | _____ |___               ./   \n";
+        std::cout << "   |/     \\|   \\_____________/   \n";
+        std::cout << "                                   \n";
+    }
+}

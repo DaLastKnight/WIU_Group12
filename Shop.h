@@ -12,11 +12,9 @@ private:
 	// Armor* armorPtr[3];
 	// Potion* potionPtr[3];
 	// Charm* charmPtr[3];
-
-	bool isWeaponBought[3];
 	
 	void showChoices(const std::string& itemType);
-	void handlePurchase(Weapons* weaponPtr, bool& weaponIsBought);
+	void handlePurchase(const std::string& itemType);
 
 public:
 	Shop(Gold* goldPtr);
