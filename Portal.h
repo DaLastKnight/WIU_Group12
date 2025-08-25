@@ -4,10 +4,13 @@
 class Portal
 {
 private:
-
+	char currentSymbol;
+	bool hasTeleported;
 public:
-	void mainMenu(std::string& currentLocation);
+	Portal();
+	
+	char mainMenu(std::string& currentLocation);
 
-	void teleport(std::string& currentLocation);
+	char teleport(std::string& currentLocation);
 };
 

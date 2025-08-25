@@ -1,19 +1,23 @@
 #include <conio.h>
+#include "Game.h"
 #include "Town.h"
 #include "Tile.h"
 #include "PlayerTile.h"
 #include "Shop.h"
-#include "selectClass.h"
+#include "SelectClass.h"
 #include "Portal.h"
 
-Town::Town()
+Town::Town(Game* ptrGame)
 {
+	worldType = "Town";
 	isInMenu = false;
 	hasTeleported = false;
 	gridWidth = 10;
 	gridHeight = 10;
-	worldType = "Town";
-	world = new char* [gridWidth];
+
+	gamePtr = ptrGame;
+	shopPtr = new Shop(gamePtr->getGoldPtr());
+	world = new char*[gridWidth];
 
 	for (int i = 0; i < gridWidth; i++)
 	{
@@ -28,7 +32,7 @@ Town::Town()
 	}
 
 	maxTiles = 7;
-	tileList = new Tile * [maxTiles];
+	tileList = new Tile* [maxTiles];
 
 	for (int i = 0; i < maxTiles; i++)
 	{
@@ -40,6 +44,8 @@ Town::Town()
 
 Town::~Town()
 {
+	delete gamePtr;
+	
 	for (int i = 0; i < maxTiles; i++)
 	{
 		delete tileList[i];
@@ -84,7 +90,7 @@ void Town::initWorld()
 void Town::checkInteraction()
 {
 	bool isCollide = false;
-
+	
 	for (int i = 0; i < maxTiles; i++)
 	{
 		if (tileList[i] != nullptr)
@@ -98,22 +104,19 @@ void Town::checkInteraction()
 			{
 				if (tileList[i]->getTileSymbol() == 'T')
 				{
-					isInMenu = true;
-					portal.teleport(worldType);
-					isInMenu = false;
-					loopWorld();
+					gamePtr->switchWorld(portal.teleport(worldType));
 				}
 				else if (tileList[i]->getTileSymbol() == 'S')
 				{
 					isInMenu = true;
-					shop.interactShop();
+					shopPtr->interactShop();
 					isInMenu = false;
 					loopWorld();
 				}
 				else if (tileList[i]->getTileSymbol() == 'C')
 				{
 					isInMenu = true;
-					selectorClass.chooseClass(p);
+					selectorClass.chooseClass();
 					isInMenu = false;
 					loopWorld();
 				}
@@ -133,7 +136,7 @@ void Town::updateTilePositions()
 			world[i][j] = ' ';
 		}
 	}
-
+	
 	int currentTileRow = 0;
 	int currentTileColumn = 0;
 
@@ -157,7 +160,7 @@ void Town::loopWorld()
 {
 	updateTilePositions();
 	printWorld();
-
+	
 	while (true)
 	{
 		if (!isInMenu)
@@ -168,4 +171,9 @@ void Town::loopWorld()
 		printWorld();
 		checkInteraction();
 	}
+}
+
+void Town::setDefault()
+{
+	playerTilePtr->setTilePosition(gridWidth, gridHeight, 4, 4);
 }

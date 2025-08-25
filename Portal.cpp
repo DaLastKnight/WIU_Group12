@@ -3,15 +3,32 @@
 #include <conio.h>
 #include <cstdlib>
 
+Portal::Portal()
+{
+    currentSymbol = '-';
+    hasTeleported = false;
+}
 
-void Portal::mainMenu(std::string& currentLocation)
+char Portal::mainMenu(std::string& currentLocation)
 {
     int currentSelection = 0;
     char keyInput;
     const int numOptions = 4;
 
-    while (true) {
+    if (currentLocation == "Normal Dungeon")
+    {
+        currentSymbol = 'N';
+    }
+    else if (currentLocation == "Boss Dungeon")
+    {
+        currentSymbol = 'B';
+    }
+    else if (currentLocation == "Town")
+    {
+        currentSymbol = 'T';
+    }
 
+    while (true) {
 
         std::cout << "You are in " << currentLocation << ".\n";
         std::cout << "Where would you like to teleport?\n\n";
@@ -19,7 +36,7 @@ void Portal::mainMenu(std::string& currentLocation)
         std::cout << ((currentSelection == 0) ? "> " : "  ") << "Go to Normal Dungeon\n";
         std::cout << ((currentSelection == 1) ? "> " : "  ") << "Go to Boss Dungeon\n";
         std::cout << ((currentSelection == 2) ? "> " : "  ") << "Go to Town\n";
-        std::cout << ((currentSelection == 3) ? "> " : "  ") << "Exit Game\n";
+        std::cout << ((currentSelection == 3) ? "> " : "  ") << "Exit Portal\n";
 
         std::cout << "\nUse W/S to navigate, Z to select.\n";
 
@@ -36,53 +53,54 @@ void Portal::mainMenu(std::string& currentLocation)
             break;
         case 'z':
             if (currentSelection == 0) { // Go to Normal Dungeon
-                if (currentLocation == "Normal Dungeon") {
+                if (currentSymbol == 'N') {
                     system("cls");
                     std::cout << "You are already in the Normal Dungeon!\n";
                 }
                 else {
-                    currentLocation = "Normal Dungeon";
+                    //currentLocation = "Normal Dungeon";
                     system("cls");
                     std::cout << "Welcome to Normal Dungeon\n";
-                    return;
+                    return 'N';
                 }
             }
             else if (currentSelection == 1) { // Go to Boss Dungeon
-                if (currentLocation == "Boss Dungeon") {
+                if (currentSymbol == 'B') {
                     system("cls");
                     std::cout << "You are already in the Boss Dungeon!\n";
                 }
                 else {
-                    currentLocation = "Boss Dungeon";
+                    //currentLocation = "Boss Dungeon";
                     system("cls");
                     std::cout << "Welcome to Boss Dungeon\n";
-                    return;
+                    return 'B';
                 }
             }
             else if (currentSelection == 2) { // Go to Town
-                if (currentLocation == "Town") {
+                if (currentSymbol == 'T') {
                     system("cls");
                     std::cout << "You are already in Town!\n";
                 }
                 else {
-                    currentLocation = "Town";
+                    //currentLocation = "Town";
                     system("cls");
                     std::cout << "Welcome to Town\n";
-                    return;
+                    return 'T';
                 }
             }
-            else if (currentSelection == 3) { // Exit Game
-                currentLocation = "Exit";
-                return;
+            else if (currentSelection == 3) {
+                return currentSymbol;
+                break;
             }
             break;
         default:
+			system("cls");
             break;
         }
     }
 }
 
 // The teleport function simply calls the unified menu
-void Portal::teleport(std::string& currentLocation) {
-    mainMenu(currentLocation);
+char Portal::teleport(std::string& currentLocation) {
+   return mainMenu(currentLocation);
 }
