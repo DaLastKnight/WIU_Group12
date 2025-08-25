@@ -6,6 +6,7 @@ class Portal
 private:
 	char currentSymbol;
 	bool hasTeleported;
+
 public:
 	Portal();
 	

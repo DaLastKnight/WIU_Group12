@@ -20,6 +20,7 @@ private:
 	Shop* shopPtr;
 	SelectClass selectorClass;
 	Portal portal;
+	Player p;
 
 public:
 	Town(Game* ptrGame);
@@ -30,4 +31,3 @@ public:
 	void loopWorld();
 	void setDefault();
 };
-

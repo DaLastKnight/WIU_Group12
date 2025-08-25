@@ -2,10 +2,13 @@
 #include "World.h"
 #include "Town.h"
 #include "Dungeon.h"
-#include "Gold.h"
+#include "Difficultyselection.h"
+
 class Game
 {
 private:
+	DifficultySelection diffselect;
+
 	// Stats management
 	Gold* goldPtr;
 
@@ -14,13 +17,15 @@ private:
 	World* currentWorld;
 	Town* townPtr;
 	Dungeon* dungeonPtr;
+
+	bool confirmSelection();
 public:
 	Game();
 	~Game();
 
 	void initGame();
+	void startingScreen();
 	void startGame();
 	void switchWorld(char newSymbol);
 	Gold* getGoldPtr() const;
 };
-

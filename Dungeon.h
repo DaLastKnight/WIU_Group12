@@ -14,11 +14,11 @@ private:
 	int currentDungeonLevel;
 	int maxTiles;
 
-	Game* gamePtr;
-	PlayerTile* playerTilePtr;
-	Tile** tileList;
-	Shop* shopPtr;
-	Portal portal;
+    Game* gamePtr;
+    PlayerTile* playerTilePtr;
+    Tile** tileList;
+    Shop* shopPtr;
+    Portal portal;
 public:
 	Dungeon(Game* ptrGame);
 	~Dungeon();
@@ -29,4 +29,3 @@ public:
 	void updateTilePositions();
 	void setDefault();
 };
-

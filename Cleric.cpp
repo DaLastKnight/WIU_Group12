@@ -3,16 +3,20 @@
 
 Cleric::Cleric()
 {
-    setClassStats();
 }
 
-void Cleric::skill(int bonusVal)
+int Cleric::bonusValue() const
+{
+    return 15;
+}
+
+void Cleric::skill(Entity& entity, int bonusVal)
 {
     std::cout << "You have casted Heal\n";
-    setStats(getHealth() + bonusVal, 15, 2, 10);
+    entity.setStats(entity.getHealth() + bonusVal, 15, 2, 10);
 }
 
-void Cleric::setClassStats()
+void Cleric::setClassStats(Entity& entity)
 {
-    setStats(65, 15, 2, 10);
+    entity.setStats(85, 15, 6, 10);
 }

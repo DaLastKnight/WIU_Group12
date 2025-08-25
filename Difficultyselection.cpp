@@ -5,7 +5,10 @@
 
 DifficultySelection::DifficultySelection() 
 {
-
+	int difficulty = 0;
+	char difficultyGrade = '-';
+	char key = '-';
+	bool selected = false;
 }
 
 DifficultySelection::~DifficultySelection() 

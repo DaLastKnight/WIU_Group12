@@ -6,7 +6,6 @@ class Gold;
 
 class Shop
 {
-
 private:
 	Gold* goldPtr;
 	Weapons* weaponList[3];

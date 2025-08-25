@@ -14,7 +14,6 @@ Dungeon::Dungeon(Game* ptrGame)
 	gridHeight = 15;
 	gamePtr = ptrGame;
 	shopPtr = new Shop(gamePtr->getGoldPtr());
-	
 	playerTilePtr = nullptr;
 	world = new char* [gridWidth];
 
@@ -26,12 +25,12 @@ Dungeon::Dungeon(Game* ptrGame)
 	{
 		for (int j = 0; j < gridHeight; j++)
 		{
-			world[i][j] = ' ';
+			world[i][j] = '-';
 		}
 	}
 
 	maxTiles = 10;
-	tileList = new Tile* [maxTiles];
+	tileList = new Tile * [maxTiles];
 
 	for (int i = 0; i < maxTiles; i++)
 	{
@@ -41,7 +40,7 @@ Dungeon::Dungeon(Game* ptrGame)
 
 Dungeon::~Dungeon()
 {
-	delete gamePtr;
+	gamePtr = nullptr;
 	
 	for (int i = 0; i < maxTiles; i++)
 	{

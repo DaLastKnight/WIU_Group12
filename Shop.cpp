@@ -1,9 +1,9 @@
+#include "Shop.h"
+#include <random>
 #include <iostream>
 #include <conio.h>
 #include <cstdlib>
-#include <random>
 #include "Gold.h"
-#include "Shop.h"
 #include "Weapons.h"
 #include "Sword.h"
 #include "Dagger.h"
@@ -15,29 +15,29 @@ Shop::Shop(Gold* goldPtr)
     int randomNumber = 0;
     std::mt19937 generator(std::random_device{}());
     std::uniform_int_distribution<int> distr(1, 3);
-    
+
     for (int i = 0; i < 3; i++)
     {
-          randomNumber = distr(generator);
-     
-          switch (randomNumber)
-          {
-          case 1:
-              randomNumber = distr(generator);
-              weaponList[i] = new Sword(randomNumber);
-              break;
-          case 2:
-              weaponList[i] = new Dagger(randomNumber);
-              break;
-          case 3:
-              weaponList[i] = new Bow(randomNumber);
-              break;
-          default:
-              weaponList[i] = nullptr;
-              break;
-          }
+        randomNumber = distr(generator);
+
+        switch (randomNumber)
+        {
+        case 1:
+            randomNumber = distr(generator);
+            weaponList[i] = new Sword(randomNumber);
+            break;
+        case 2:
+            weaponList[i] = new Dagger(randomNumber);
+            break;
+        case 3:
+            weaponList[i] = new Bow(randomNumber);
+            break;
+        default:
+            weaponList[i] = nullptr;
+            break;
+        }
     }
-    
+
     // Repeat the above for the other different arrays of items
 }
 
@@ -77,11 +77,10 @@ void Shop::handlePurchase(const std::string& itemType)
             currentSelection = (currentSelection > 0) ? currentSelection - 1 : numOptions - 1;
             break;
         case 's':
-            currentSelection = (currentSelection < numOptions - 1) ? currentSelection + 1 : 0; // When going below bottommost option, wraps around to the top
+            currentSelection = (currentSelection < numOptions - 1) ? currentSelection + 1 : 0;
             break;
         case 'z':
             if (currentSelection == 0) { // Yes
-                goldPtr->setTotalGold(-100);
                 system("cls");
                 std::cout << "\nYou have bought a random " << itemType << "!\n";
                 std::cout << "Returning to shop menu...\n";
@@ -111,7 +110,7 @@ void Shop::showChoices(const std::string& itemType)
     {
         system("cls");
         std::cout << "Weapons on sale:\n";
-        
+
         for (int i = 0; i < 3; i++)
         {
             std::cout << ((currentSelection == i) ? "> " : "  ") << weaponList[i]->getName() << " tier " << weaponList[i]->getTier() << '\n';
@@ -165,7 +164,17 @@ void Shop::interactShop()
     while (true) {
 
         system("cls");
-        
+
+        std::cout << "      . .                     \n";
+        std::cout << "        .:                    \n";
+        std::cout << "       __[]_________          \n";
+        std::cout << "      /\\____________\\       \n";
+        std::cout << "      ||   |Shop|   |         \n";
+        std::cout << "      ||     __     |         \n";
+        std::cout << "      || '' | .| '' |         \n";
+        std::cout << "      ||    |  |    |         \n";
+        std::cout << "    `'``````''`````''``       \n";
+
         std::cout << "\nWelcome to the General Shop!\n";
         std::cout << "\nWhat would you like to browse today?\n";
 
@@ -175,8 +184,6 @@ void Shop::interactShop()
         std::cout << ((currentSelection == 2) ? "> " : "  ") << "Potion\n";
         std::cout << ((currentSelection == 3) ? "> " : "  ") << "Miscellaneous\n";
         std::cout << ((currentSelection == 4) ? "> " : "  ") << "Exit Shop\n";
-
-        std::cout << "\nCurrent amount of gold: " << goldPtr->getTotalGold() << '\n';
 
         std::cout << "\nUse W/S to navigate, Z to select, X to exit.\n";
 
@@ -217,7 +224,7 @@ void Shop::interactShop()
             return; // Exit the function to leave the shop
         default:
             // Ignore invalid key presses
-			system("cls");
+            system("cls");
             break;
         }
     }

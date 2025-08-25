@@ -6,8 +6,9 @@
 Portal::Portal()
 {
     currentSymbol = '-';
-    hasTeleported = false;
+    hasTeleported = 0;
 }
+
 
 char Portal::mainMenu(std::string& currentLocation)
 {
@@ -94,7 +95,7 @@ char Portal::mainMenu(std::string& currentLocation)
             }
             break;
         default:
-			system("cls");
+            system("cls");
             break;
         }
     }
@@ -102,5 +103,5 @@ char Portal::mainMenu(std::string& currentLocation)
 
 // The teleport function simply calls the unified menu
 char Portal::teleport(std::string& currentLocation) {
-   return mainMenu(currentLocation);
+    return mainMenu(currentLocation);
 }

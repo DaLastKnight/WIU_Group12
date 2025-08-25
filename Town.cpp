@@ -4,7 +4,7 @@
 #include "Tile.h"
 #include "PlayerTile.h"
 #include "Shop.h"
-#include "SelectClass.h"
+#include "selectClass.h"
 #include "Portal.h"
 
 Town::Town(Game* ptrGame)
@@ -17,7 +17,7 @@ Town::Town(Game* ptrGame)
 
 	gamePtr = ptrGame;
 	shopPtr = new Shop(gamePtr->getGoldPtr());
-	world = new char*[gridWidth];
+	world = new char* [gridWidth];
 
 	for (int i = 0; i < gridWidth; i++)
 	{
@@ -32,7 +32,7 @@ Town::Town(Game* ptrGame)
 	}
 
 	maxTiles = 7;
-	tileList = new Tile* [maxTiles];
+	tileList = new Tile * [maxTiles];
 
 	for (int i = 0; i < maxTiles; i++)
 	{
@@ -44,7 +44,7 @@ Town::Town(Game* ptrGame)
 
 Town::~Town()
 {
-	delete gamePtr;
+	gamePtr = nullptr;
 	
 	for (int i = 0; i < maxTiles; i++)
 	{
@@ -90,7 +90,7 @@ void Town::initWorld()
 void Town::checkInteraction()
 {
 	bool isCollide = false;
-	
+
 	for (int i = 0; i < maxTiles; i++)
 	{
 		if (tileList[i] != nullptr)
@@ -116,7 +116,7 @@ void Town::checkInteraction()
 				else if (tileList[i]->getTileSymbol() == 'C')
 				{
 					isInMenu = true;
-					selectorClass.chooseClass();
+					selectorClass.chooseClass(p);
 					isInMenu = false;
 					loopWorld();
 				}
@@ -136,7 +136,7 @@ void Town::updateTilePositions()
 			world[i][j] = ' ';
 		}
 	}
-	
+
 	int currentTileRow = 0;
 	int currentTileColumn = 0;
 
@@ -160,7 +160,7 @@ void Town::loopWorld()
 {
 	updateTilePositions();
 	printWorld();
-	
+
 	while (true)
 	{
 		if (!isInMenu)

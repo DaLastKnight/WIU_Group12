@@ -8,6 +8,8 @@
 
 Player::Player()
 {
+	specialty = nullptr;
+	input = '-';
 }
 
 bool Player::confirmSelection() {

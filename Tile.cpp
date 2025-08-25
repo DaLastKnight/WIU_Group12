@@ -42,7 +42,7 @@ int Tile::getTileRow() const
 
 int Tile::getTileColumn() const
 {
-	return tilePosition.getCol();
+	return tilePosition.getColumn();
 }
 
 void Tile::setTileSymbol(char newSymbol)
@@ -57,6 +57,6 @@ void Tile::setTilePosition(int maxGridWidth, int maxGridHeight, int tileRow = 0,
 	if (validPosition)
 	{
 		tilePosition.setRow(tileRow);
-		tilePosition.setCol(tileColumn);
+		tilePosition.setColumn(tileColumn);
 	}
 }
