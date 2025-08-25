@@ -16,7 +16,7 @@ PlayerTile::~PlayerTile()
 void PlayerTile::move(int maxGridWidth, int maxGridHeight)
 {
 	isPlayerMoved = false;
-	
+
 	while (!isPlayerMoved)
 	{
 		int input = _getch();

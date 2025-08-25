@@ -1,20 +1,14 @@
-#include "Game.h"
 #include "Dungeon.h"
 #include "Tile.h"
 #include "PlayerTile.h"
-#include "Shop.h"
-#include "Portal.h"
 
-Dungeon::Dungeon(Game* ptrGame)
+Dungeon::Dungeon()
 {
-	worldType = "Dungeon";
-	isInMenu = false;
 	currentDungeonLevel = 1;
 	gridWidth = 15;
 	gridHeight = 15;
-	gamePtr = ptrGame;
-	shopPtr = new Shop(gamePtr->getGoldPtr());
-	
+	isInMenu = false;
+	worldType = "Dungeon";
 	playerTilePtr = nullptr;
 	world = new char* [gridWidth];
 
@@ -26,12 +20,12 @@ Dungeon::Dungeon(Game* ptrGame)
 	{
 		for (int j = 0; j < gridHeight; j++)
 		{
-			world[i][j] = ' ';
+			world[i][j] = '-';
 		}
 	}
 
 	maxTiles = 10;
-	tileList = new Tile* [maxTiles];
+	tileList = new Tile * [maxTiles];
 
 	for (int i = 0; i < maxTiles; i++)
 	{
@@ -41,8 +35,6 @@ Dungeon::Dungeon(Game* ptrGame)
 
 Dungeon::~Dungeon()
 {
-	delete gamePtr;
-	
 	for (int i = 0; i < maxTiles; i++)
 	{
 		delete tileList[i];
@@ -81,45 +73,6 @@ void Dungeon::initWorld()
 	playerTilePtr->setTilePosition(gridWidth, gridHeight, 4, 4);
 }
 
-void Dungeon::checkInteraction()
-{
-	bool isCollide = false;
-
-	for (int i = 0; i < maxTiles; i++)
-	{
-		if (tileList[i] != nullptr)
-		{
-			if ((playerTilePtr->getTileRow() == tileList[i]->getTileRow()) && (playerTilePtr->getTileColumn() == tileList[i]->getTileColumn()))
-			{
-				isCollide = true;
-			}
-
-			if (isCollide)
-			{
-				if (tileList[i]->getTileSymbol() == 'T')
-				{
-					gamePtr->switchWorld(portal.teleport(worldType));
-				}
-				else if (tileList[i]->getTileSymbol() == 'S')
-				{
-					isInMenu = true;
-					shopPtr->interactShop();
-					isInMenu = false;
-					loopWorld();
-				}
-				else if (tileList[i]->getTileSymbol() == 'C')
-				{
-					isInMenu = true;
-					isInMenu = false;
-					loopWorld();
-				}
-
-				isCollide = false;
-			}
-		}
-	}
-}
-
 void Dungeon::resetDungeon()
 {
 	// resets player pos to one side of the dungeon
@@ -127,14 +80,6 @@ void Dungeon::resetDungeon()
 
 void Dungeon::updateTilePositions()
 {
-	for (int i = 0; i < gridWidth; i++)
-	{
-		for (int j = 0; j < gridHeight; j++)
-		{
-			world[i][j] = ' ';
-		}
-	}
-	
 	int currentTileRow = 0;
 	int currentTileColumn = 0;
 
@@ -148,30 +93,9 @@ void Dungeon::updateTilePositions()
 			world[currentTileRow][currentTileColumn] = tileList[i]->getTileSymbol();
 		}
 	}
-
-	currentTileRow = playerTilePtr->getTileRow();
-	currentTileColumn = playerTilePtr->getTileColumn();
-	world[currentTileRow][currentTileColumn] = playerTilePtr->getTileSymbol();
 }
 
 void Dungeon::loopWorld()
 {
-	updateTilePositions();
-	printWorld();
 
-	while (true)
-	{
-		if (!isInMenu)
-		{
-			playerTilePtr->move(gridWidth, gridHeight);
-		}
-		updateTilePositions();
-		printWorld();
-		checkInteraction();
-	}
-}
-
-void Dungeon::setDefault()
-{
-	playerTilePtr->setTilePosition(gridWidth, gridHeight, 4, 4);
 }

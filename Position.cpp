@@ -2,37 +2,24 @@
 
 Position::Position()
 {
-	row = 0;
-	column = 0;
 }
 
-Position::Position(int inputRow, int inputColumn)
+void Position::setRow(int r)
 {
-	row = inputRow;
-	column = inputColumn;
+	row = r;
 }
 
-Position::~Position()
+void Position::setCol(int c)
 {
-
+	col = c;
 }
 
-int Position::getRow() const
+int Position::getRow(void) const
 {
 	return row;
 }
 
-int Position::getColumn() const
+int Position::getCol(void) const
 {
-	return column;
-}
-
-void Position::setRow(int newRow)
-{
-	row = newRow;
-}
-
-void Position::setColumn(int newColumn)
-{
-	column = newColumn;
+	return col;
 }

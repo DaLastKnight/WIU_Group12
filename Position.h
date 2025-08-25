@@ -3,15 +3,16 @@ class Position
 {
 private:
 	int row;
-	int column;
+	int col;
+
 public:
 	Position();
-	Position(int inputRow, int inputColumn);
-	~Position();
+	Position(int r, int c) : row(r), col(c) {}
 
-	int getRow() const;
-	int getColumn() const;
-	void setRow(int newRow);
-	void setColumn(int newColumn);
+	void setRow(int r);
+	void setCol(int c);
+
+	int getRow(void) const;
+	int getCol(void) const;
 };
 

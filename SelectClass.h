@@ -6,11 +6,13 @@ class SelectClass
 private:
 	bool confirmSelection();
 	Player* player;
+	PlayerClass* pc;
 public:
 	Player* getPlayer();
 
 	SelectClass() : player(nullptr) {}
 
-	void chooseClass();
+	void chooseClass(Player& player);
+
 };
 

@@ -22,7 +22,7 @@ World::~World()
 void World::printWorld()
 {
 	system("cls");
-	
+
 	// This print only works if gridWidth = gridHeight! For others, please override this function
 	std::cout << "Currently in: " << worldType;
 	if (worldType == "Dungeon")

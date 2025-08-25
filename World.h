@@ -18,4 +18,3 @@ public:
 	int getGridWidth() const;
 	int getGridHeight() const;
 };
-
