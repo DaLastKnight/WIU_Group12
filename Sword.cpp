@@ -26,3 +26,30 @@ Sword::Sword(int tier)
         price = 500;
     }
 }
+
+void Sword::weaponSprite(int tier)
+{
+    if (tier == 1) {
+        std::cout << "                                    \n";
+        std::cout << "          |\\___________________     \n";
+        std::cout << "    )====={ __________________/     \n";
+        std::cout << "          |/                        \n";
+        std::cout << "                                    \n";
+    }
+    else if (tier == 2) {
+        std::cout << "     _                                   \n";
+        std::cout << "    | |   /|----------------------.      \n";
+        std::cout << "    | )===(|---------------------/       \n";
+        std::cout << "    |_|   \\|--------------------`        \n";
+        std::cout << "                                         \n";
+    }
+    else if (tier == 3) {
+        std::cout << "    __      /|                                 \n";
+        std::cout << "   |  |    | |----------------------------\\   \n";
+        std::cout << "   | :-{===|=[]============================>   \n";
+        std::cout << "   |__|    | |----------------------------/    \n";
+        std::cout << "            \\|                                \n";
+        std::cout << "                                               \n";
+    }
+    }
+    

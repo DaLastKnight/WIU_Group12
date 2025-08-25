@@ -11,11 +11,6 @@
 
 Shop::Shop(Gold* goldPtr)
 {
-    for (int i = 0; i < 3; i++)
-    {
-        isWeaponBought[i] = false;
-    }
-
     this->goldPtr = goldPtr;
     int randomNumber = 0;
     std::mt19937 generator(std::random_device{}());
@@ -60,7 +55,7 @@ Shop::~Shop()
     delete goldPtr;
 }
 
-void Shop::handlePurchase(Weapons* weaponPtr, bool& weaponIsBought)
+void Shop::handlePurchase(const std::string& itemType)
 {
     int currentSelection = 0;
     char keyInput = '-';
@@ -69,7 +64,7 @@ void Shop::handlePurchase(Weapons* weaponPtr, bool& weaponIsBought)
     while (true) {
         system("cls"); // Clear the screen at the start of the loop
 
-        std::cout << "\nWould you like to buy a " << weaponPtr->getName() << " of tier " << weaponPtr->getTier() << " for " << weaponPtr->getPrice() << "G?" << '\n';
+        std::cout << "\nWould you like to buy a Random " << itemType << "?\n";
 
         // Print menu options with highlighting
         std::cout << ((currentSelection == 0) ? "> " : "  ") << "Yes\n";
@@ -88,32 +83,19 @@ void Shop::handlePurchase(Weapons* weaponPtr, bool& weaponIsBought)
             break;
         case 'z':
             if (currentSelection == 0) { // Yes
-                if (goldPtr->getTotalGold() < weaponPtr->getPrice())
-                {
-                    weaponIsBought = false;
-                    std::cout << "\nYou have insufficient gold!\n";
-                    return;
-                }
-                else
-                {
-                    system("cls");
-                    goldPtr->setTotalGold(goldPtr->getTotalGold() - weaponPtr->getPrice());
-                    weaponIsBought = true;
-                    std::cout << "\nYou have bought a " << weaponPtr->getName() << "!\n";
-                    std::cout << "Returning to shop menu...\n";
-                    return; // Return to the showChoices() loop
-                }
+                system("cls");
+                std::cout << "\nYou have bought a random " << itemType << "!\n";
+                std::cout << "Returning to shop menu...\n";
+                return; // Return to the interactShop() loop
             }
             else { // No
                 system("cls");
                 std::cout << "Returning to shop menu...\n";
                 return;
             }
-            break;
         case 'x':
             system("cls");
-            return; // Immediately return to the showChoices() loop
-            break;
+            return; // Immediately return to the main shop loop
         default:
             break; // Ignore invalid keys
         }
@@ -133,14 +115,8 @@ void Shop::showChoices(const std::string& itemType)
 
         for (int i = 0; i < 3; i++)
         {
-            if (isWeaponBought[i])
-            {
-                std::cout << ((currentSelection == i) ? "> " : "  ") << "Sold!" << '\n';
-            }
-            else
-            {
-                std::cout << ((currentSelection == i) ? "> " : "  ") << weaponList[i]->getName() << " tier " << weaponList[i]->getTier() << '\n';
-            }
+            std::cout << ((currentSelection == i) ? "> " : "  ") << weaponList[i]->getName() << " tier " << weaponList[i]->getTier() << '\n';
+            weaponList[i]->weaponSprite(weaponList[i]->getTier());
         }
 
         std::cout << "\nCurrent amount of gold: " << goldPtr->getTotalGold() << '\n';
@@ -160,9 +136,16 @@ void Shop::showChoices(const std::string& itemType)
             break;
         case 'z':
             // Handle the action for the selected option
-            if (!isWeaponBought[currentSelection])
-            {
-                handlePurchase(weaponList[currentSelection], isWeaponBought[currentSelection]);
+            switch (currentSelection) {
+            case 0:
+                handlePurchase("Weapon");
+                break;
+            case 1:
+                handlePurchase("Armor");
+                break;
+            case 2:
+                handlePurchase("Potion");
+                break;
             }
             break;
         case 'x':
@@ -226,13 +209,13 @@ void Shop::interactShop()
                 showChoices("Weapon");
                 break;
             case 1:
-                showChoices("Armor");
+                handlePurchase("Armor");
                 break;
             case 2:
-                showChoices("Potion");
+                handlePurchase("Potion");
                 break;
             case 3:
-                showChoices("Miscellaneous");
+                handlePurchase("Miscellaneous");
                 break;
             case 4:
                 std::cout << "\nThank you for visiting the shop! Goodbye!\n";

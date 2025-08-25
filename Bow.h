@@ -7,4 +7,5 @@ protected:
 
 public:
     Bow(int tier);
+    void weaponSprite(int tier) override;
 };
