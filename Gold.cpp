@@ -15,7 +15,7 @@ int Gold::getTotalGold() const
 
 void Gold::setTotalGold(int total)
 {
-	totalGold += total;
+	totalGold = total;
 }
 
 void Gold::displayAllGold()

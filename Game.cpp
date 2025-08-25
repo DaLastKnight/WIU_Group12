@@ -68,7 +68,7 @@ Game::~Game()
 
 void Game::initGame()
 {
-    goldPtr = new Gold(0);
+    goldPtr = new Gold(1000);
     townPtr = new Town(this);
     dungeonPtr = new Dungeon(this);
     townPtr->initWorld();
