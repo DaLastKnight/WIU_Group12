@@ -12,10 +12,8 @@ protected:
 public:
     Weapons();
 
-    std::string getName() const;
-    int getPrice() const;
-    int getBaseAttack() const;
-    int getTier() const;
-
-    virtual void weaponSprite(int tier) = 0;
-};
+    // For Inventory
+    std::string getName() const override { return name; }
+    std::string getType() const override { return "WEAPON"; }
+    void displayStats() const;
+};  

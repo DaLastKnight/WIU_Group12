@@ -7,5 +7,6 @@ protected:
 
 public:
     Bow(int tier);
-    void weaponSprite(int tier) override;
+    void displayStats() const;
+    std::string getName() const;
 };

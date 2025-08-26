@@ -27,23 +27,17 @@ Dagger::Dagger(int tier)
     }
 }
 
-void Dagger::weaponSprite(int tier)
+void Dagger::displayStats() const
 {
-    if (tier == 1) {
-        std::cout << "    ____________________  \n";
-        std::cout << "   |/---\\|`---.....__-`  \n";
-        std::cout << "                          \n";
-    }
-    else if (tier == 2) {
-        std::cout << "    ____________________________  \n";
-        std::cout << "   |/-----\\|`---....._________-`  \n";
-        std::cout << "                                  \n";
-    }
-    else if (tier == 3) {
-        std::cout << "                                   \n";
-        std::cout << "    ____________________________   \n";
-        std::cout << "   | _____ |___               ./   \n";
-        std::cout << "   |/     \\|   \\_____________/   \n";
-        std::cout << "                                   \n";
-    }
+    std::cout << "  Name: " << name << "\n";
+    std::cout << "  Type: Dagger (WEAPON)\n";
+    std::cout << "  Tier: " << tier << "\n";
+    std::cout << "  Attack: " << baseAttack << "\n";
+    std::cout << "  Price: " << price << " gold\n";
 }
+
+std::string Dagger::getName() const
+{
+    return name + " Tier " + std::to_string(tier);
+}
+

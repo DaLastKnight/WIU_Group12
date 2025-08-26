@@ -27,29 +27,16 @@ Sword::Sword(int tier)
     }
 }
 
-void Sword::weaponSprite(int tier)
+void Sword::displayStats() const
 {
-    if (tier == 1) {
-        std::cout << "                                    \n";
-        std::cout << "          |\\___________________     \n";
-        std::cout << "    )====={ __________________/     \n";
-        std::cout << "          |/                        \n";
-        std::cout << "                                    \n";
-    }
-    else if (tier == 2) {
-        std::cout << "     _                                   \n";
-        std::cout << "    | |   /|----------------------.      \n";
-        std::cout << "    | )===(|---------------------/       \n";
-        std::cout << "    |_|   \\|--------------------`        \n";
-        std::cout << "                                         \n";
-    }
-    else if (tier == 3) {
-        std::cout << "    __      /|                                 \n";
-        std::cout << "   |  |    | |----------------------------\\   \n";
-        std::cout << "   | :-{===|=[]============================>   \n";
-        std::cout << "   |__|    | |----------------------------/    \n";
-        std::cout << "            \\|                                \n";
-        std::cout << "                                               \n";
-    }
-    }
-    
+    std::cout << "  Name: " << name << " Tier " << tier << "\n";
+    std::cout << "  Type: Sword (WEAPON)\n";
+    std::cout << "  Tier: " << tier << "\n";
+    std::cout << "  Attack: " << baseAttack << "\n";
+    std::cout << "  Price: " << price << " gold\n";
+}
+
+std::string Sword::getName() const
+{
+    return name + " Tier " + std::to_string(tier);
+}

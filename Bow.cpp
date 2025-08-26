@@ -27,52 +27,16 @@ Bow::Bow(int tier)
     }
 }
 
-void Bow::weaponSprite(int tier)
+void Bow::displayStats() const
 {
-    if (tier == 1) {
-        std::cout << "          /(           \n";
-        std::cout << "        /   \          \n";
-        std::cout << "      /      )         \n";
-        std::cout << "   >>>-------<--->     \n";
-        std::cout << "      \      )         \n";
-        std::cout << "        \   /          \n";
-        std::cout << "          \(           \n";
-        std::cout << "                       \n";
-    }
-    else if (tier == 2) {
-        std::cout << "                            \n";
-        std::cout << "        .-:\\               \n";
-        std::cout << "      ./    :\\             \n";
-        std::cout << "    ./       :.             \n";
-        std::cout << "   /          :\\           \n";
-        std::cout << "  >>-----------||-->>       \n";
-        std::cout << "   \\          :/           \n";
-        std::cout << "    `\\       :`            \n";
-        std::cout << "      `\\    :/             \n";
-        std::cout << "        `-:/                \n";
-    }
-    else if (tier == 3) {
-        std::cout << "                                  \n";
-        std::cout << "                    /             \n";
-        std::cout << "                   /\\.           \n";
-        std::cout << "                 /   |.           \n";
-        std::cout << "               /     `|.          \n";
-        std::cout << "             /        |.          \n";
-        std::cout << "           /          `|.         \n";
-        std::cout << "         /             |.         \n";
-        std::cout << "       /               |\         \n";
-        std::cout << "     /                 ##         \n";
-        std::cout << "   >>==================##=======> \n";
-        std::cout << "     \\                 ##       \n";
-        std::cout << "       \\               |/       \n";
-        std::cout << "         \\             |`       \n";
-        std::cout << "           \\          ,|`       \n";
-        std::cout << "             \\        |`        \n";
-        std::cout << "               \\     ,|`        \n";
-        std::cout << "                 \\   |`         \n";
-        std::cout << "                   \\/`          \n";
-        std::cout << "                    \\           \n";
-        std::cout << "                                \n";
-    }
-    
+    std::cout << "  Name: " << name << "\n";
+    std::cout << "  Type: Bow (WEAPON)\n";
+    std::cout << "  Tier: " << tier << "\n";
+    std::cout << "  Attack: " << baseAttack << "\n";
+    std::cout << "  Price: " << price << " gold\n";
+}
+
+std::string Bow::getName() const
+{
+    return name + " Tier " + std::to_string(tier);
 }
