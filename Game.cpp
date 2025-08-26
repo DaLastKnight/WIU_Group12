@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "Player.h"
 #include "Gold.h"
 #include "Town.h"
 #include "Dungeon.h"
@@ -52,7 +53,10 @@ bool Game::confirmSelection() {
 Game::Game()
 {
     currentSymbol = 'T';
+    playerPtr = nullptr;
     goldPtr = nullptr;
+    woodPtr = nullptr;
+    stonePtr = nullptr;
     currentWorld = nullptr;
     townPtr = nullptr;
 	dungeonPtr = nullptr;
@@ -60,7 +64,10 @@ Game::Game()
 
 Game::~Game()
 {
+    delete playerPtr;
     delete goldPtr;
+    delete woodPtr;
+    delete stonePtr;
     delete currentWorld;
     delete townPtr;
     delete dungeonPtr;
@@ -68,7 +75,14 @@ Game::~Game()
 
 void Game::initGame()
 {
+    playerPtr = new Player();
     goldPtr = new Gold(1000);
+    woodPtr = new Wood();
+    stonePtr = new Stone();
+    // Filler code
+    woodPtr->setMaterialAmount(100);
+    stonePtr->setMaterialAmount(100);
+
     townPtr = new Town(this);
     dungeonPtr = new Dungeon(this);
     townPtr->initWorld();
@@ -140,9 +154,16 @@ void Game::startingScreen()
                 if (confirmSelection()) {
                     diffselect.selectDifficulty();
                     diffselect.setDifficulty();
-                    startGame();
-                    std::cout << "\nYou have started the game\n";
-                    return; // Exit the function to start the game
+                    if (selectClass.chooseStarterClass(*(playerPtr)))
+                    {
+                        startGame();
+                        std::cout << "\nYou have started the game\n";
+                        return;
+                    }
+                    else
+                    {
+                        return;
+                    }
                 }
                 break;
             case 1:
@@ -174,6 +195,21 @@ void Game::startGame()
 Gold* Game::getGoldPtr() const
 {
     return goldPtr;
+}
+
+Wood* Game::getWoodPtr() const
+{
+    return woodPtr;
+}
+
+Stone* Game::getStonePtr() const
+{
+    return stonePtr;
+}
+
+Player* Game::getPlayerPtr() const
+{
+    return playerPtr;
 }
 
 void Game::switchWorld(char newSymbol)

@@ -1,4 +1,5 @@
 #include "Weapons.h"
+#include <iostream>
 
 Weapons::Weapons()
 {
@@ -26,4 +27,14 @@ int Weapons::getTier() const
 int Weapons::getPrice() const
 {
 	return price;
+}
+
+void Weapons::displayStats() const
+{
+	std::cout << "  -- Weapon Stats --\n";
+	std::cout << "  Name: " << name << "\n";
+	std::cout << "  Type: " << getType() << "\n";
+	std::cout << "  Price: " << price << " gold\n";
+	std::cout << "  Base Attack: " << baseAttack << "\n";
+	std::cout << "  Tier: " << tier << "\n";
 }

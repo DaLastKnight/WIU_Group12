@@ -3,6 +3,7 @@
 #include "Tile.h"
 #include "PlayerTile.h"
 #include "Shop.h"
+#include "Buildings.h"
 #include "SelectClass.h"
 #include "Portal.h"
 
@@ -18,9 +19,9 @@ private:
 	Tile** tileList;
 	PlayerTile* playerTilePtr;
 	Shop* shopPtr;
+	Buildings* buildingsList[4];
 	SelectClass selectorClass;
 	Portal portal;
-	Player p;
 
 public:
 	Town(Game* ptrGame);

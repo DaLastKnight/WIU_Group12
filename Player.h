@@ -12,7 +12,7 @@ private:
 	bool confirmSelection();
 public:
 	Player();
-	Player(int row, int col) : Entity(row, col, 'P', health, attack, defense, speed) {}
+	// Player(int row, int col) : Entity(row, col, 'P', health, attack, defense, speed) {}
 
 	void viewCurrentStats();
 	void setClassStats(PlayerClass* playerclass);

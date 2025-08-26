@@ -4,7 +4,7 @@
 Sword::Sword(int tier)
 {
     name = "Sword";
-    
+
     baseAttack = 5;
 
     this->tier = tier;
@@ -25,6 +25,20 @@ Sword::Sword(int tier)
         baseAttack *= 3;
         price = 500;
     }
+}
+
+void Sword::displayStats() const
+{
+    std::cout << "  Name: " << name << " Tier " << tier << "\n";
+    std::cout << "  Type: Sword (WEAPON)\n";
+    std::cout << "  Tier: " << tier << "\n";
+    std::cout << "  Attack: " << baseAttack << "\n";
+    std::cout << "  Price: " << price << " gold\n";
+}
+
+std::string Sword::getName() const
+{
+    return name + " Tier " + std::to_string(tier);
 }
 
 void Sword::weaponSprite(int tier)

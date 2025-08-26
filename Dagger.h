@@ -6,6 +6,8 @@ class Dagger : public Weapons
 protected:
 
 public:
-    Dagger(int tier);
+    Dagger(int daggerTier);
+    void displayStats() const;
+    std::string getName() const;
     void weaponSprite(int tier) override;
 };

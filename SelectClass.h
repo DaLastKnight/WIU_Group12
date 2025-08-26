@@ -13,6 +13,6 @@ public:
 	SelectClass() : player(nullptr), pc(nullptr) {}
 
 	void chooseClass(Player& player);
-
+	bool chooseStarterClass(Player& player);
 };
 

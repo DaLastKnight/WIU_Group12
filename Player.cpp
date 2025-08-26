@@ -81,7 +81,7 @@ void Player::attacking()
 	while (true) {
 		system("cls"); // Clear the screen at the start of the main loop
 
-		std::cout << "\You are Attacking!\n";
+		std::cout << "\nYou are Attacking!\n";
 		std::cout << "\nWhat are you going to do?\n";
 
 		// Print menu options with highlighting
@@ -200,7 +200,7 @@ void Player::defending()
 	while (true) {
 		system("cls"); // Clear the screen at the start of the main loop
 
-		std::cout << "\You are Attacking!\n";
+		std::cout << "\nYou are Attacking!\n";
 		std::cout << "\nWhat are you going to do?\n";
 
 		// Print menu options with highlighting

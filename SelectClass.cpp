@@ -151,5 +151,98 @@ void SelectClass::chooseClass(Player& player) {
     }
 }
 
+bool SelectClass::chooseStarterClass(Player& player)
+{
+    int currentSelection = 0;
+    char keyInput;
+    const int numOptions = 5; // Total number of menu options
 
+    while (true) {
+        system("cls"); // Clear the screen at the start of the main loop
 
+        std::cout << "\nChoose your starter class:\n\n";
+
+        // Print menu options with highlighting
+        std::cout << ((currentSelection == 0) ? "> " : "  ") << "Warrior/Fighter\n";
+        std::cout << ((currentSelection == 1) ? "> " : "  ") << "Thief/Rogue\n";
+        std::cout << ((currentSelection == 2) ? "> " : "  ") << "Mage/Wizard\n";
+        std::cout << ((currentSelection == 3) ? "> " : "  ") << "Cleric/Priest\n";
+        std::cout << ((currentSelection == 4) ? "> " : "  ") << "Exit Game\n";
+
+        std::cout << "\nUse W/S to navigate, Z to select, X to exit.\n";
+
+        keyInput = _getch();
+
+        switch (keyInput) {
+        case 'w':
+            currentSelection = (currentSelection > 0) ? currentSelection - 1 : numOptions - 1;
+            break;
+        case 's':
+            currentSelection = (currentSelection < numOptions - 1) ? currentSelection + 1 : 0;
+            break;
+        case 'z':
+            switch (currentSelection) {
+            case 0:
+                system("cls");
+                std::cout << "\nYou have chosen Warrior/Fighter.\n";
+                std::cout << "Assigned stats: HP: 100, ATK: 25, DEF: 5, SPD: 12.\n";
+                if (confirmSelection()) {
+                    // Logic to save the selected class
+                    delete pc;
+                    pc = new Warrior();
+                    player.setClassStats(pc);
+                    std::cout << "\nWarrior/Fighter has been selected. Starting your adventure...\n";
+                    return true; // Exit the function to start the game
+                }
+                break;
+            case 1:
+                system("cls");
+                std::cout << "\nYou have chosen Thief/Rogue.\n";
+                std::cout << "Assigned stats: HP: 80, ATK: 20, DEF: 3, SPD: 15.\n";
+                if (confirmSelection()) {
+                    delete pc;
+                    pc = new Rogue();
+                    player.setClassStats(pc);
+                    std::cout << "\nThief/Rogue has been selected. Starting your adventure...\n";
+                    return true;
+                }
+                break;
+            case 2:
+                system("cls");
+                std::cout << "\nYou have chosen Mage/Wizard.\n";
+                std::cout << "Assigned stats: HP: 50, ATK: 35, DEF: 2, SPD: 7.\n";
+                if (confirmSelection()) {
+                    delete pc;
+                    pc = new Wizard();
+                    player.setClassStats(pc);
+                    std::cout << "\nMage/Wizard has been selected. Starting your adventure...\n";
+                    return true;
+                }
+                break;
+            case 3:
+                system("cls");
+                std::cout << "\nYou have chosen Cleric/Priest.\n";
+                std::cout << "Assigned stats: HP: 65, ATK: 15, DEF: 7, SPD: 10.\n";
+                if (confirmSelection()) {
+                    delete pc;
+                    pc = new Cleric();
+                    player.setClassStats(pc);
+                    std::cout << "\nCleric/Priest has been selected. Starting your adventure..\n";
+                    return true;
+                }
+                break;
+            case 4:
+                system("cls");
+                std::cout << "Exiting game...\n";
+                return false; // Exit the function
+            }
+            break;
+        case 'x':
+            system("cls");
+            std::cout << "\nExiting game...\n";
+            return false; // Exit the function immediately
+        default:
+            break; // Ignore invalid key presses
+        }
+    }
+}

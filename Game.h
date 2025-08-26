@@ -1,8 +1,12 @@
 #pragma once
+#include "Player.h"
+#include "SelectClass.h"
 #include "World.h"
 #include "Town.h"
 #include "Dungeon.h"
 #include "Difficultyselection.h"
+#include "Wood.h"
+#include "Stone.h"
 
 class Game
 {
@@ -11,12 +15,17 @@ private:
 
 	// Stats management
 	Gold* goldPtr;
+	Wood* woodPtr;
+	Stone* stonePtr;
 
 	// World management
 	char currentSymbol;
 	World* currentWorld;
 	Town* townPtr;
 	Dungeon* dungeonPtr;
+
+	SelectClass selectClass;
+	Player* playerPtr;
 
 	bool confirmSelection();
 public:
@@ -28,4 +37,7 @@ public:
 	void startGame();
 	void switchWorld(char newSymbol);
 	Gold* getGoldPtr() const;
+	Wood* getWoodPtr() const;
+	Stone* getStonePtr() const;
+	Player* getPlayerPtr() const;
 };

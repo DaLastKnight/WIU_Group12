@@ -9,14 +9,13 @@ Portal::Portal()
     hasTeleported = 0;
 }
 
-
 char Portal::mainMenu(std::string& currentLocation)
 {
     int currentSelection = 0;
     char keyInput;
     const int numOptions = 4;
 
-    if (currentLocation == "Normal Dungeon")
+    if (currentLocation == "Dungeon")
     {
         currentSymbol = 'N';
     }

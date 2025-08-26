@@ -12,6 +12,9 @@ protected:
 public:
     Weapons();
 
+    std::string getType() const override { return "WEAPON"; }
+    void displayStats() const;
+
     std::string getName() const;
     int getPrice() const;
     int getBaseAttack() const;

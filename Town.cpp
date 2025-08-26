@@ -4,6 +4,11 @@
 #include "Tile.h"
 #include "PlayerTile.h"
 #include "Shop.h"
+#include "Buildings.h"
+#include "Hospital.h"
+#include "Blacksmith.h"
+#include "Armory.h"
+#include "Bakery.h"
 #include "selectClass.h"
 #include "Portal.h"
 
@@ -17,6 +22,12 @@ Town::Town(Game* ptrGame)
 
 	gamePtr = ptrGame;
 	shopPtr = new Shop(gamePtr->getGoldPtr());
+
+	for (int i = 0; i < 4; i++)
+	{
+		buildingsList[i] = nullptr;
+	}
+
 	world = new char* [gridWidth];
 
 	for (int i = 0; i < gridWidth; i++)
@@ -31,8 +42,8 @@ Town::Town(Game* ptrGame)
 		}
 	}
 
-	maxTiles = 7;
-	tileList = new Tile * [maxTiles];
+	maxTiles = 3;
+	tileList = new Tile * [maxTiles]; // This allocates memory for an array of pointers
 
 	for (int i = 0; i < maxTiles; i++)
 	{
@@ -45,17 +56,46 @@ Town::Town(Game* ptrGame)
 Town::~Town()
 {
 	gamePtr = nullptr;
+
+	for (int i = 0; i < 4; i++)
+	{
+		if (buildingsList[i] != nullptr)
+		{
+			delete buildingsList[i];
+		}
+	}
 	
 	for (int i = 0; i < maxTiles; i++)
 	{
 		delete tileList[i];
 	}
-
+	
 	delete[] tileList;
 }
 
 void Town::initWorld()
 {
+	for (int i = 0; i < 4; i++)
+	{
+		switch (i)
+		{
+		case 0:
+			buildingsList[i] = new Hospital(gamePtr);
+			break;
+		case 1:
+			buildingsList[i] = new Blacksmith(gamePtr);
+			break;
+		case 2:
+			buildingsList[i] = new Armory(gamePtr);
+			break;
+		case 3:
+			buildingsList[i] = new Bakery(gamePtr);
+			break;
+		default:
+			break;
+		}
+	}
+	
 	for (int i = 0; i < maxTiles; i++)
 	{
 		switch (i)
@@ -72,12 +112,6 @@ void Town::initWorld()
 			tileList[i] = new Tile('C'); // Player class Selector
 			tileList[i]->setTilePosition(gridWidth, gridHeight, 2, 1);
 			break;
-		case 3:
-		case 4:
-		case 5:
-		case 6:
-			// tileList[i] = new Tile('U'); // Unbuilt buildings
-			break;
 		default:
 			break;
 		}
@@ -90,6 +124,7 @@ void Town::initWorld()
 void Town::checkInteraction()
 {
 	bool isCollide = false;
+	Position currentBuildingPosition;
 
 	for (int i = 0; i < maxTiles; i++)
 	{
@@ -98,6 +133,10 @@ void Town::checkInteraction()
 			if ((playerTilePtr->getTileRow() == tileList[i]->getTileRow()) && (playerTilePtr->getTileColumn() == tileList[i]->getTileColumn()))
 			{
 				isCollide = true;
+			}
+			else
+			{
+				isCollide = false;
 			}
 
 			if (isCollide)
@@ -116,13 +155,32 @@ void Town::checkInteraction()
 				else if (tileList[i]->getTileSymbol() == 'C')
 				{
 					isInMenu = true;
-					selectorClass.chooseClass(p);
+					selectorClass.chooseClass(*(gamePtr->getPlayerPtr()));
 					isInMenu = false;
 					loopWorld();
 				}
-
-				isCollide = false;
 			}
+		}
+	}
+
+	for (int i = 0; i < 4; i++)
+	{
+		if (buildingsList[i] != nullptr)
+		{
+			if ((playerTilePtr->getTileRow() == (buildingsList[i]->getPosition()).getRow()) && (playerTilePtr->getTileColumn() == (buildingsList[i]->getPosition()).getColumn()))
+			{
+				isCollide = true;
+			}
+
+			if (isCollide)
+			{
+				isInMenu = true;
+				buildingsList[i]->interactBuilding();
+				isInMenu = false;
+				loopWorld();
+			}
+
+			isCollide = false;
 		}
 	}
 }
@@ -148,6 +206,14 @@ void Town::updateTilePositions()
 			currentTileColumn = tileList[i]->getTileColumn();
 
 			world[currentTileRow][currentTileColumn] = tileList[i]->getTileSymbol();
+		}
+	}
+
+	for (int i = 0; i < 4; i++)
+	{
+		if (buildingsList[i] != nullptr)
+		{
+			world[(buildingsList[i]->getPosition()).getRow()][(buildingsList[i]->getPosition()).getColumn()] = buildingsList[i]->getTileSymbol();
 		}
 	}
 
