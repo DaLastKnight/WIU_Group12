@@ -1,6 +1,9 @@
 #pragma once
+#include "Items.h"
 #include <iostream>
-class Materials
+#include <string>
+
+class Materials: public Items
 {
 protected:
 	int materialAmount;
@@ -12,5 +15,10 @@ public:
 
 	int getMaterialAmount() const;
 	void setMaterialAmount(int total);
+
+	// For Inventory
+	std::string getName() const { return materialName; }
+	std::string getType() const { return "MATERIAL"; }
+	void displayStats() const;
 };
 

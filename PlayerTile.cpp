@@ -2,6 +2,24 @@
 #include <conio.h>
 #include "PlayerTile.h"
 
+#include <Windows.h> 
+#include <conio.h>
+#include <ctype.h>
+#include <cstdlib>
+#include "World.h"
+
+#include "Inventory.h"
+#include "Sword.h"
+#include "Bow.h"
+#include "Dagger.h"
+#include <iostream>
+#include "LightArmor.h"
+#include "HeavyArmor.h"
+#include "HealthPotions.h"
+#include "Rope.h"
+#include "Wood.h"
+#include "Stone.h"
+
 PlayerTile::PlayerTile()
 {
 	tileSymbol = 'P';
@@ -20,6 +38,11 @@ void PlayerTile::move(int maxGridWidth, int maxGridHeight)
 	while (!isPlayerMoved)
 	{
 		int input = _getch();
+		if (input == 'i' || input == 'I') {
+			Inventory playerInventory(10);
+			playerInventory.openInventory();
+			isPlayerMoved = true;
+		}
 		if (input == 0 || input == 224)
 		{
 			input = _getch();

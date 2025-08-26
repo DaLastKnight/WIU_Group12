@@ -20,3 +20,11 @@ void Materials::setMaterialAmount(int total)
 {
 	materialAmount = total;
 }
+
+void Materials::displayStats() const
+{
+	std::cout << "  -- Material Info --\n";
+	std::cout << "  Name: " << materialName << "\n";
+	std::cout << "  Type: " << getType() << "\n";
+	std::cout << "  Amount: " << materialAmount << "\n";
+}
