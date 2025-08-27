@@ -10,228 +10,224 @@
 #include <cstdlib>
 
 bool Game::confirmSelection() {
-    int currentSelection = 0;
-    char keyInput;
-    const int numOptions = 2; // For Yes and No options
+	int currentSelection = 0;
+	char keyInput;
+	const int numOptions = 2; // For Yes and No options
 
-    while (true) {
-        system("cls"); // Clear the screen
+	while (true) {
+		system("cls"); // Clear the screen
 
-        std::cout << "\nConfirm selection?\n";
+		std::cout << "\nConfirm selection?\n";
 
-        // Print menu options with highlighting
-        std::cout << ((currentSelection == 0) ? "> " : "  ") << "Yes\n";
-        std::cout << ((currentSelection == 1) ? "> " : "  ") << "No\n";
+		// Print menu options with highlighting
+		std::cout << ((currentSelection == 0) ? "> " : "  ") << "Yes\n";
+		std::cout << ((currentSelection == 1) ? "> " : "  ") << "No\n";
 
-        std::cout << "\nUse W/S to navigate, Z to select, X to go back.\n";
+		std::cout << "\nUse W/S to navigate, Z to select, X to go back.\n";
 
-        keyInput = _getch();
+		keyInput = _getch();
 
-        switch (keyInput) {
-        case 'w':
-            currentSelection = (currentSelection > 0) ? currentSelection - 1 : numOptions - 1;
-            break;
-        case 's':
-            currentSelection = (currentSelection < numOptions - 1) ? currentSelection + 1 : 0;
-            break;
-        case 'z':
-            if (currentSelection == 0) { // Yes
-                return true;
-            }
-            else { // No
-                return false;
-            }
-            break;
-        case 'x':
-            return false; // Return false to go back to the previous menu
-        default:
-            break; // Ignore invalid keys
-        }
-    }
+		switch (keyInput) {
+		case 'w':
+			currentSelection = (currentSelection > 0) ? currentSelection - 1 : numOptions - 1;
+			break;
+		case 's':
+			currentSelection = (currentSelection < numOptions - 1) ? currentSelection + 1 : 0;
+			break;
+		case 'z':
+			if (currentSelection == 0) { // Yes
+				return true;
+			}
+			else { // No
+				return false;
+			}
+			break;
+		case 'x':
+			return false; // Return false to go back to the previous menu
+		default:
+			break; // Ignore invalid keys
+		}
+	}
 }
 
 Game::Game()
 {
-    currentSymbol = 'T';
-    playerPtr = nullptr;
-    goldPtr = nullptr;
-    woodPtr = nullptr;
-    stonePtr = nullptr;
-    currentWorld = nullptr;
-    townPtr = nullptr;
+	currentSymbol = 'T';
+	playerPtr = nullptr;
+	goldPtr = nullptr;
+	woodPtr = nullptr;
+	stonePtr = nullptr;
+	currentWorld = nullptr;
+	townPtr = nullptr;
 	dungeonPtr = nullptr;
 }
 
 Game::~Game()
 {
-    delete playerPtr;
-    delete goldPtr;
-    delete woodPtr;
-    delete stonePtr;
-    delete currentWorld;
-    delete townPtr;
-    delete dungeonPtr;
+	delete playerPtr;
+	delete goldPtr;
+	delete woodPtr;
+	delete stonePtr;
+	delete currentWorld;
+	delete townPtr;
+	delete dungeonPtr;
 }
 
 void Game::initGame()
 {
-    playerPtr = new Player();
-    goldPtr = new Gold(1000);
-    woodPtr = new Wood();
-    stonePtr = new Stone();
-    // Filler code
-    woodPtr->setMaterialAmount(100);
-    stonePtr->setMaterialAmount(100);
+	playerPtr = new Player();
+	goldPtr = new Gold(1000);
+	woodPtr = new Wood(0);
+	stonePtr = new Stone(0);
+	// Filler code
+	woodPtr->setMaterialAmount(100);
+	stonePtr->setMaterialAmount(100);
 
-    townPtr = new Town(this);
-    dungeonPtr = new Dungeon(this);
-    townPtr->initWorld();
-    dungeonPtr->initWorld();
+	townPtr = new Town(this);
+	dungeonPtr = new Dungeon(this);
+	townPtr->initWorld();
+	dungeonPtr->initWorld();
 }
 
 void Game::startingScreen()
 {
-    int currentSelection = 0;
-    char keyInput;
-    const int numOptions = 2; // Total number of menu options
+	int currentSelection = 0;
+	char keyInput;
+	const int numOptions = 2; // Total number of menu options
 
-    HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
+	HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
 
-    while (true) {
-        system("cls"); // Clear the screen at the start of the main loop
+	while (true) {
+		system("cls"); // Clear the screen at the start of the main loop
 
-        std::cout << "+---------------------------------------------------------------------------------------------------------+\n";
-        std::cout << "|  ______     ___      ___   ___       ___      _______   __________   ________     __          __        |\n";
-        std::cout << "| |      \\    \\  \\    /  /   |  \\      | |     |   ____|  |  ______|  |   __   |   |  |        |  |       |\n";
-        std::cout << "| |   _   \\    \\  \\  /  /    |   \\     | |     |  |       |  |        |  |  |  |   |  |        |  |       |\n";
-        std::cout << "| |  | \\   |    \\  \\/  /     | |\\ \\    | |     |  |       |  |        |  |  |  |   |  |	       |  |       |\n";
-        std::cout << "| |  |  |  |     \\    /      | | \\ \\   | |     |  |___    |  |___     |  |__|  |   |  |        |  |       |\n";
-        std::cout << "| |  |  |  |      |  |       | |  \\ \\  | |     |   ___|   |   ___|    |   __   |   |  |	       |  |       |\n";
-        std::cout << "| |  |  |  |      |  |       | |   \\ \\ | |     |  |       |  |        |  |  |  |   |  |        |  |       |\n";
-        std::cout << "| |  |_/   |      |  |       | |    \\ \\| |     |  |       |  |        |  |  |  |   |  |        |  |       |\n";
-        std::cout << "| |       /       |  |       | |     \\   |     |  |____   |  |        |  |  |  |   |  |_____   |  |_____  |\n";
-        std::cout << "| |______/        |__|       |_|      \\__|     |_______|  |__|        |__|  |__|   |________|  |________| |\n";
-        std::cout << "|                                                                                                         |\n";
-        std::cout << "+---------------------------------------------------------------------------------------------------------+\n";
-        std::cout << "|                                                                                                         |\n";
-        std::cout << "|                                                                                                         |\n";
-        std::cout << "|                           |---------|                           |---------|                             |\n";
+		std::cout << "+---------------------------------------------------------------------------------------------------------+\n";
+		std::cout << "|  ______     ___      ___   ___       ___      _______   __________   ________     __          __        |\n";
+		std::cout << "| |      \\    \\  \\    /  /   |  \\      | |     |   ____|  |  ______|  |   __   |   |  |        |  |       |\n";
+		std::cout << "| |   _   \\    \\  \\  /  /    |   \\     | |     |  |       |  |        |  |  |  |   |  |        |  |       |\n";
+		std::cout << "| |  | \\   |    \\  \\/  /     | |\\ \\    | |     |  |       |  |        |  |  |  |   |  |	       |  |       |\n";
+		std::cout << "| |  |  |  |     \\    /      | | \\ \\   | |     |  |___    |  |___     |  |__|  |   |  |        |  |       |\n";
+		std::cout << "| |  |  |  |      |  |       | |  \\ \\  | |     |   ___|   |   ___|    |   __   |   |  |	       |  |       |\n";
+		std::cout << "| |  |  |  |      |  |       | |   \\ \\ | |     |  |       |  |        |  |  |  |   |  |        |  |       |\n";
+		std::cout << "| |  |_/   |      |  |       | |    \\ \\| |     |  |       |  |        |  |  |  |   |  |        |  |       |\n";
+		std::cout << "| |       /       |  |       | |     \\   |     |  |____   |  |        |  |  |  |   |  |_____   |  |_____  |\n";
+		std::cout << "| |______/        |__|       |_|      \\__|     |_______|  |__|        |__|  |__|   |________|  |________| |\n";
+		std::cout << "|                                                                                                         |\n";
+		std::cout << "+---------------------------------------------------------------------------------------------------------+\n";
+		std::cout << "|                                                                                                         |\n";
+		std::cout << "|                                                                                                         |\n";
+		std::cout << "|                           |---------|                           |---------|                             |\n";
 
-        std::cout << "|                         " << ((currentSelection == 0) ? "> |" : "  |") << "  ";
+		std::cout << "|                         " << ((currentSelection == 0) ? "> |" : "  |") << "  ";
 
-        SetConsoleTextAttribute(h, 3);
-        std::cout << "Start";
-        SetConsoleTextAttribute(h, 7);
+		SetConsoleTextAttribute(h, 3);
+		std::cout << "Start";
+		SetConsoleTextAttribute(h, 7);
 
-        std::cout << "  |                         " << ((currentSelection == 1) ? "> |" : "  |") << "  ";
+		std::cout << "  |                         " << ((currentSelection == 1) ? "> |" : "  |") << "  ";
 
-        SetConsoleTextAttribute(h, 4);
-        std::cout << "Exit";
-        SetConsoleTextAttribute(h, 7);
-        std::cout << "   |                             |\n";
+		SetConsoleTextAttribute(h, 4);
+		std::cout << "Exit";
+		SetConsoleTextAttribute(h, 7);
+		std::cout << "   |                             |\n";
 
-        std::cout << "|                           |---------|                           |---------|                             |\n";
-        std::cout << "|                                                                                                         |\n";
-        std::cout << "|                                                                                                         |\n";
-        std::cout << "+---------------------------------------------------------------------------------------------------------+\n";
+		std::cout << "|                           |---------|                           |---------|                             |\n";
+		std::cout << "|                                                                                                         |\n";
+		std::cout << "|                                                                                                         |\n";
+		std::cout << "+---------------------------------------------------------------------------------------------------------+\n";
 
-        std::cout << "\nUse W/S to navigate, Z to select.\n";
+		std::cout << "\nUse W/S to navigate, Z to select.\n";
 
-        keyInput = _getch();
+		keyInput = _getch();
 
-        switch (keyInput) {
-        case 'w':
-            currentSelection = (currentSelection > 0) ? currentSelection - 1 : numOptions - 1;
-            break;
-        case 's':
-            currentSelection = (currentSelection < numOptions - 1) ? currentSelection + 1 : 0;
-            break;
-        case 'z':
-            switch (currentSelection) {
-            case 0:
-                system("cls");
-                std::cout << "\nStart Game?\n";
-                if (confirmSelection()) {
-                    diffselect.selectDifficulty();
-                    diffselect.setDifficulty();
-                    if (selectClass.chooseStarterClass(*(playerPtr)))
-                    {
-                        startGame();
-                        std::cout << "\nYou have started the game\n";
-                        return;
-                    }
-                    else
-                    {
-                        return;
-                    }
-                }
-                break;
-            case 1:
-                system("cls");
-                std::cout << "\nExit?\n";
-                if (confirmSelection()) {
+		switch (keyInput) {
+		case 'w':
+			currentSelection = (currentSelection > 0) ? currentSelection - 1 : numOptions - 1;
+			break;
+		case 's':
+			currentSelection = (currentSelection < numOptions - 1) ? currentSelection + 1 : 0;
+			break;
+		case 'z':
+			switch (currentSelection) {
+			case 0:
+				system("cls");
+				diffselect.selectDifficulty();
+				diffselect.setDifficulty();
+				if (selectClass.chooseStarterClass(*(playerPtr)))
+				{
+					startGame();
+					std::cout << "\nYou have started the game\n";
+					return;
+				}
+				else
+				{
+					return;
+				}
+			case 1:
+				system("cls");
+				std::cout << "\nExit?\n";
+				if (confirmSelection()) {
 
-                    std::cout << "\nYou left the game ;-;\n";
-                    return;
-                }
-                break;
-            }
-        case 'x':
-            system("cls");
-            std::cout << "\nExiting Game.\n";
-            return; // Exit the function immediately
-        default:
-            break; // Ignore invalid key presses
-        }
-    }
+					std::cout << "\nYou left the game ;-;\n";
+					return;
+				}
+				break;
+			}
+		case 'x':
+			system("cls");
+			std::cout << "\nExiting Game.\n";
+			return; // Exit the function immediately
+		default:
+			break; // Ignore invalid key presses
+		}
+	}
 }
 
 void Game::startGame()
 {
-    currentWorld = townPtr;
-    currentWorld->loopWorld();
+	currentWorld = townPtr;
+	currentWorld->loopWorld();
 }
 
 Gold* Game::getGoldPtr() const
 {
-    return goldPtr;
+	return goldPtr;
 }
 
 Wood* Game::getWoodPtr() const
 {
-    return woodPtr;
+	return woodPtr;
 }
 
 Stone* Game::getStonePtr() const
 {
-    return stonePtr;
+	return stonePtr;
 }
 
 Player* Game::getPlayerPtr() const
 {
-    return playerPtr;
+	return playerPtr;
 }
 
 void Game::switchWorld(char newSymbol)
 {
-    if (currentSymbol == newSymbol)
-    {
-        std::cout << "You are already in this world!" << '\n';
-    }
-    else
-    {
-        currentSymbol = newSymbol;
+	if (currentSymbol == newSymbol)
+	{
+		std::cout << "You are already in this world!" << '\n';
+	}
+	else
+	{
+		currentSymbol = newSymbol;
 
-        if (currentSymbol == 'T')
-        {
-            currentWorld = townPtr;
+		if (currentSymbol == 'T')
+		{
+			currentWorld = townPtr;
 
-        }
-        else if (currentSymbol == 'N')
-        {
-            currentWorld = dungeonPtr;
-        }
-    }
+		}
+		else if (currentSymbol == 'N')
+		{
+			currentWorld = dungeonPtr;
+		}
+	}
 
-    currentWorld->loopWorld();
+	currentWorld->loopWorld();
 }

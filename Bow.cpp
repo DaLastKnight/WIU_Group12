@@ -38,7 +38,7 @@ void Bow::displayStats() const
 
 std::string Bow::getName() const
 {
-    return name + " Tier " + std::to_string(tier);
+    return name;
 }
 
 void Bow::weaponSprite(int tier)
@@ -54,7 +54,6 @@ void Bow::weaponSprite(int tier)
         std::cout << "                       \n";
     }
     else if (tier == 2) {
-        std::cout << "                            \n";
         std::cout << "        .-:\\               \n";
         std::cout << "      ./    :\\             \n";
         std::cout << "    ./       :.             \n";
@@ -66,27 +65,21 @@ void Bow::weaponSprite(int tier)
         std::cout << "        `-:/                \n";
     }
     else if (tier == 3) {
-        std::cout << "                                  \n";
-        std::cout << "                    /             \n";
-        std::cout << "                   /\\.           \n";
-        std::cout << "                 /   |.           \n";
-        std::cout << "               /     `|.          \n";
-        std::cout << "             /        |.          \n";
-        std::cout << "           /          `|.         \n";
-        std::cout << "         /             |.         \n";
-        std::cout << "       /               |         \n";
-        std::cout << "     /                 ##         \n";
-        std::cout << "   >>==================##=======> \n";
-        std::cout << "     \\                 ##       \n";
-        std::cout << "       \\               |/       \n";
-        std::cout << "         \\             |`       \n";
-        std::cout << "           \\          ,|`       \n";
-        std::cout << "             \\        |`        \n";
-        std::cout << "               \\     ,|`        \n";
-        std::cout << "                 \\   |`         \n";
-        std::cout << "                   \\/`          \n";
-        std::cout << "                    \\           \n";
-        std::cout << "                                \n";
+        std::cout << "                /             \n";
+        std::cout << "               /\\.           \n";
+        std::cout << "             /    |.          \n";
+        std::cout << "           /      `|.         \n";
+        std::cout << "         /         |.         \n";
+        std::cout << "       /           |\\         \n";
+        std::cout << "     /             ##         \n";
+        std::cout << "   >>==============##=======> \n";
+        std::cout << "     \\             ##       \n";
+        std::cout << "       \\           |/       \n";
+        std::cout << "         \\        |`       \n";
+        std::cout << "           \\     ,|`       \n";
+        std::cout << "             \\   |`        \n";
+        std::cout << "               \\/`          \n";
+        std::cout << "                \\           \n";
     }
     
 }

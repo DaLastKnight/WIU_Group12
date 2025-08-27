@@ -169,7 +169,7 @@ bool SelectClass::chooseStarterClass(Player& player)
         std::cout << ((currentSelection == 3) ? "> " : "  ") << "Cleric/Priest\n";
         std::cout << ((currentSelection == 4) ? "> " : "  ") << "Exit Game\n";
 
-        std::cout << "\nUse W/S to navigate, Z to select, X to exit.\n";
+        std::cout << "\nUse W/S to navigate, Z to select.\n";
 
         keyInput = _getch();
 
@@ -240,9 +240,12 @@ bool SelectClass::chooseStarterClass(Player& player)
         case 'x':
             system("cls");
             std::cout << "\nExiting game...\n";
-            return false; // Exit the function immediately
+            break; // Exit the function immediately
         default:
             break; // Ignore invalid key presses
         }
     }
 }
+
+
+

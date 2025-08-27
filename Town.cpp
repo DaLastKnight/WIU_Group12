@@ -42,7 +42,7 @@ Town::Town(Game* ptrGame)
 		}
 	}
 
-	maxTiles = 3;
+	maxTiles = 7;
 	tileList = new Tile * [maxTiles]; // This allocates memory for an array of pointers
 
 	for (int i = 0; i < maxTiles; i++)
@@ -64,12 +64,12 @@ Town::~Town()
 			delete buildingsList[i];
 		}
 	}
-	
+
 	for (int i = 0; i < maxTiles; i++)
 	{
 		delete tileList[i];
 	}
-	
+
 	delete[] tileList;
 }
 
@@ -95,7 +95,7 @@ void Town::initWorld()
 			break;
 		}
 	}
-	
+
 	for (int i = 0; i < maxTiles; i++)
 	{
 		switch (i)
