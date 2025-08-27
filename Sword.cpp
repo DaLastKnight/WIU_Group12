@@ -38,7 +38,7 @@ void Sword::displayStats() const
 
 std::string Sword::getName() const
 {
-    return name + " Tier " + std::to_string(tier);
+    return name;
 }
 
 void Sword::weaponSprite(int tier)

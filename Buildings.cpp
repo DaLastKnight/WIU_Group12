@@ -5,20 +5,20 @@
 
 Buildings::Buildings(Game* gamePtr)
 {
-	buildingTier = 0;
+    buildingTier = 0;
     woodPrice = 0;
     stonePrice = 0;
-	buildingName = "";
+    buildingName = "";
     buffDescription = "";
     tileSymbol = '?';
-	isBuildingUpgraded = false;
-	woodPtr = gamePtr->getWoodPtr();
-	stonePtr = gamePtr->getStonePtr();
+    isBuildingUpgraded = false;
+    woodPtr = gamePtr->getWoodPtr();
+    stonePtr = gamePtr->getStonePtr();
 }
 
 Buildings::~Buildings()
 {
-	
+
 }
 
 void Buildings::repairMenu()
@@ -81,7 +81,7 @@ void Buildings::repairMenu()
                     {
                         tileSymbol = 'B';
                     }
-                    
+
                     woodPtr->setMaterialAmount(woodPtr->getMaterialAmount() - woodPrice);
                     stonePtr->setMaterialAmount(stonePtr->getMaterialAmount() - stonePrice);
                     isBuildingUpgraded = true;
@@ -109,11 +109,11 @@ void Buildings::repairMenu()
 void Buildings::showBuildingInfo()
 {
     char keyInput = '-';
-    
+
     while (true)
     {
         system("cls");
-        
+
         printBuilding();
         if (!isBuildingUpgraded)
         {

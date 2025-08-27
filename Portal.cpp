@@ -9,6 +9,7 @@ Portal::Portal()
     hasTeleported = 0;
 }
 
+
 char Portal::mainMenu(std::string& currentLocation)
 {
     int currentSelection = 0;

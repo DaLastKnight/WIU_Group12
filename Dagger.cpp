@@ -38,7 +38,7 @@ void Dagger::displayStats() const
 
 std::string Dagger::getName() const
 {
-    return name + " Tier " + std::to_string(tier);
+    return name;
 }
 
 void Dagger::weaponSprite(int tier)
