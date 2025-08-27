@@ -5,39 +5,18 @@
 #include "Bow.h"
 #include "Dagger.h"
 #include "Items.h"
-#include "Potions.h" // Corrected: "Potions.h" to "Potion.h"
+#include "Potions.h"
 #include <iostream>
 #include <string>
 #include <conio.h> // For _getch()
 #include <cstdlib> // For system("cls")
 #include <cctype> // For asciiToLower
 
-// Helper function: Converts an ASCII character to lowercase.
-char asciiToLower(char c) {
-    if (c >= 'A' && c <= 'Z') {
-        return c + 32;
-    }
-    return c;
-}
-
-// Helper function: Compares two strings for equality, ignoring ASCII case.
-bool equalsIgnoreCaseASCII(const std::string& str1, const std::string& str2) {
-    if (str1.length() != str2.length()) {
-        return false;
-    }
-    for (size_t i = 0; i < str1.length(); ++i) {
-        if (asciiToLower(str1[i]) != asciiToLower(str2[i])) {
-            return false;
-        }
-    }
-    return true;
-}
-
 // Constructor for the Inventory class.
 // Initializes equipment and general item arrays with specified capacities.
 Inventory::Inventory(size_t equipmentCapacity, size_t itemCapacity)
     : currentEquipmentSize(0), maxEquipmentCapacity(equipmentCapacity),
-    currentItemSize(0), maxItemCapacity(itemCapacity)
+    currentItemSize(0), maxItemCapacity(itemCapacity), placeholderInt(0)
 {
     // Allocate memory for equipment pointers and initialize to nullptr.
     equipments = new Equipments * [maxEquipmentCapacity];
@@ -213,8 +192,10 @@ bool Inventory::trashItemAction(Items* item, size_t actualIndex) {
 std::string Inventory::useItemAction(Items* item, size_t actualIndex) {
     std::string itemName = item->getName(); // Capture name before potential deletion.
     std::string message = "You used " + itemName + ".\n";
-    if (equalsIgnoreCaseASCII(item->getType(), "POTION"));(equalsIgnoreCaseASCII(item->getType(), "MISCELLANEOUS")); {
-        // If it's a potion, it's consumed (trashed).
+
+    // Combine the conditions for consumables into a single check.
+    if (equalsIgnoreCaseASCII(item->getType(), "POTION") || equalsIgnoreCaseASCII(item->getType(), "MISCELLANEOUS")) {
+        // If it's a consumable, it's trashed.
         if (trashItemAction(item, actualIndex)) {
             message = itemName + " was consumed.\n"; // Use the captured name.
             return message;
@@ -224,8 +205,30 @@ std::string Inventory::useItemAction(Items* item, size_t actualIndex) {
             return message;
         }
     }
+
     // TODO: Add logic for other item types (e.g., buffs, quest items).
     return message;
+}
+
+char Inventory::asciiToLower(char c)
+{
+    if (c >= 'A' && c <= 'Z') {
+        return c + 32;
+    }
+    return c;
+}
+
+bool Inventory::equalsIgnoreCaseASCII(const std::string& str1, const std::string& str2) const
+{
+    if (str1.length() != str2.length()) {
+        return false;
+    }
+    for (size_t i = 0; i < str1.length(); ++i) {
+        if (asciiToLower(str1[i]) != asciiToLower(str2[i])) {
+            return false;
+        }
+    }
+    return true;
 }
 
 
@@ -239,15 +242,15 @@ bool Inventory::handleEquipmentDetailsAndActions(const std::string& selectedCate
     bool itemWasRemovedLocal = false;
     // Capture the item's name before potential deletion to use in messages.
     std::string equipmentNameForMessage = selectedEquipmentPtr->getName();
+    bool continueLoop = true;
 
-    while (true) {
+    while (continueLoop) {
+        system("cls");
         // If the item was removed in the previous iteration (e.g., trashed),
         // we should exit this details view immediately.
         if (itemWasRemovedLocal) {
             return false; // Signal to calling function to refresh its list.
         }
-
-        system("cls"); // Clear screen for item details display.
 
         std::cout << "--- " << equipmentNameForMessage << " Stats ---\n\n";
         selectedEquipmentPtr->displayStats();
@@ -264,7 +267,6 @@ bool Inventory::handleEquipmentDetailsAndActions(const std::string& selectedCate
         actionInput = asciiToLower(actionInput); // Convert to lowercase.
 
         if (actionInput == 'i') { return true; } // Exit entire inventory.
-        if (actionInput == 'x') { break; } // Go back to category list.
 
         switch (actionInput) {
         case 'w': // Move selection up.
@@ -273,21 +275,30 @@ bool Inventory::handleEquipmentDetailsAndActions(const std::string& selectedCate
         case 's': // Move selection down.
             actionSelection = (actionSelection < numActions - 1) ? actionSelection + 1 : 0;
             break;
+        case 'x':
+            continueLoop = false;
+            break;
         case 'z': { // Select an action.
             switch (actionSelection) {
             case 0: // Use (Equip) action.
                 actionMessage = equipEquipmentAction(selectedEquipmentPtr);
+                std::cout << actionMessage;
                 break;
             case 1: // Unequip action.
                 actionMessage = unequipEquipmentAction(selectedEquipmentPtr);
+                std::cout << actionMessage;
                 break;
             case 2: { // Trash/Delete action.
                 int confirmSelection = 0;
                 const int numConfirmOptions = 2;
                 const std::string confirmOptions[] = { "Yes", "No" };
+                bool confirmLoopRunning = true;
 
-                while (true) {
-                    // Do not clear screen here; print confirmation below existing info.
+                while (confirmLoopRunning) {
+                    system("cls"); // Clear screen for item details display
+                    std::cout << "--- " << equipmentNameForMessage << " Stats ---\n\n";
+                    selectedEquipmentPtr->displayStats();
+
                     std::cout << "\nAre you sure you want to trash " << equipmentNameForMessage << "?\n";
                     for (int i = 0; i < numConfirmOptions; ++i) {
                         std::cout << ((confirmSelection == i) ? "> " : "  ") << confirmOptions[i] << "\n";
@@ -297,12 +308,13 @@ bool Inventory::handleEquipmentDetailsAndActions(const std::string& selectedCate
                     char confirmInput = (char)_getch();
                     confirmInput = asciiToLower(confirmInput);
 
-                    if (confirmInput == 'i') { return true; } // Exit entire inventory.
-                    if (confirmInput == 'x') { actionMessage = "Trash cancelled.\n"; goto exit_confirm_loop; }
-
                     switch (confirmInput) {
-                    case 'w': confirmSelection = (confirmSelection > 0) ? confirmSelection - 1 : numConfirmOptions - 1; break;
-                    case 's': confirmSelection = (confirmSelection < numConfirmOptions - 1) ? confirmSelection + 1 : 0; break;
+                    case 'w':
+                        confirmSelection = (confirmSelection > 0) ? confirmSelection - 1 : numConfirmOptions - 1;
+                        break;
+                    case 's':
+                        confirmSelection = (confirmSelection < numConfirmOptions - 1) ? confirmSelection + 1 : 0;
+                        break;
                     case 'z':
                         if (confirmSelection == 0) { // Confirmed "Yes" to trash.
                             if (trashEquipmentAction(selectedEquipmentPtr, actualIndex)) {
@@ -316,21 +328,32 @@ bool Inventory::handleEquipmentDetailsAndActions(const std::string& selectedCate
                         else { // Confirmed "No" to trash.
                             actionMessage = "Trash cancelled.\n";
                         }
-                        goto exit_confirm_loop; // Exit confirmation loop.
-                    default: break;
+                        confirmLoopRunning = false;
+                        system("cls");
+                        break;
+                    case 'x':
+                        actionMessage = "Trash cancelled.\n";
+                        confirmLoopRunning = false;
+                        break;
+                    case 'i':
+                        return true;
+                    default:
+                        break;
                     }
-                }
-            exit_confirm_loop:; // Label for exiting confirmation loop.
+                } // end while(confirmLoopRunning)
                 break;
             }
-            }
+            } // end switch(actionSelection)
             // If item was removed, break from this outer switch to re-evaluate the while loop.
-            if (itemWasRemovedLocal) break;
+            if (itemWasRemovedLocal) {
+                break;
+            }
             break;
         }
-        default: break;
+        default:
+            break;
         }
-    }
+    } // end while(true)
     return false; // Normal exit from item details to category list.
 }
 
@@ -344,15 +367,15 @@ bool Inventory::handleItemDetailsAndActions(const std::string& selectedCategory,
     bool itemWasRemovedLocal = false;
     // Capture the item's name before potential deletion to use in messages.
     std::string itemNameForMessage = selectedItemPtr->getName();
+    bool continueLoop = true;
 
-    while (true) {
+    while (continueLoop) {
+        system("cls");
         // If the item was removed in the previous iteration (e.g., trashed or consumed),
         // we should exit this details view immediately.
         if (itemWasRemovedLocal) {
             return false; // Signal to calling function to refresh its list.
         }
-
-        system("cls"); // Clear screen for item details display.
 
         if (itemNameForMessage == "Wood") {
             std::cout << "--- " << itemNameForMessage << " Stats ---\n\n";
@@ -378,42 +401,45 @@ bool Inventory::handleItemDetailsAndActions(const std::string& selectedCategory,
         char actionInput = (char)_getch(); // Get user input.
         actionInput = asciiToLower(actionInput); // Convert to lowercase.
 
-        if (actionInput == 'i') { return true; } // Exit entire inventory.
-        if (actionInput == 'x') { break; } // Go back to category list.
-
         switch (actionInput) {
-        case 'w': // Move selection up.
-            actionSelection = (actionSelection > 0) ? actionSelection - 1 : numActions - 1;
+        case 'w':
+            if (selectedCategory != "Materials") {
+                actionSelection = (actionSelection > 0) ? actionSelection - 1 : numActions - 1;
+            }
             break;
-        case 's': // Move selection down.
-            actionSelection = (actionSelection < numActions - 1) ? actionSelection + 1 : 0;
+        case 's':
+            if (selectedCategory != "Materials") {
+                actionSelection = (actionSelection < numActions - 1) ? actionSelection + 1 : 0;
+            }
             break;
-        case 'z': { // Select an action.
+        case 'x':
+            continueLoop = false;
+            break;
+        case 'i':
+            return true;
+        case 'z': {
+            if (selectedCategory == "Materials") {
+                break; // No actions for materials, so do nothing on 'Z'.
+            }
             switch (actionSelection) {
-            case 0: { // Use action.
+            case 0: { // Use action
                 actionMessage = useItemAction(selectedItemPtr, actualIndex);
-                // Check if the item was consumed (trashed) by useItemAction.
-                // We must do this by checking if the item is still valid, not by getType after potential deletion.
-                // If it was a potion, useItemAction calls trashItemAction, which deletes the pointer.
-                // So, if trashItemAction returned true, it means item was removed.
-                // The useItemAction returns a message, we need to infer removal from that.
-                // A better approach would be for useItemAction to return a bool indicating removal.
-                // For now, we'll assume "consumed" in the message means it was removed.
-                if (actionMessage.find("consumed") != std::string::npos || actionMessage.find("TRASHED") != std::string::npos) {
+
+                if (actionMessage.find("consumed") != std::string::npos) {
                     itemWasRemovedLocal = true;
-                }
-                if (itemWasRemovedLocal) { // If the item was removed, immediately return.
-                    return false;
                 }
                 break;
             }
-            case 1: { // Trash/Delete action.
+            case 1: { // Trash/Delete action
                 int confirmSelection = 0;
                 const int numConfirmOptions = 2;
                 const std::string confirmOptions[] = { "Yes", "No" };
+                bool confirmLoopRunning = true;
 
-                while (true) {
-                    // Do not clear screen here; print confirmation below existing info.
+                while (confirmLoopRunning) {
+                    system("cls");
+                    std::cout << "--- " << itemNameForMessage << " Stats ---\n\n";
+                    selectedItemPtr->displayStats();
                     std::cout << "\nAre you sure you want to trash " << itemNameForMessage << "?\n";
                     for (int i = 0; i < numConfirmOptions; ++i) {
                         std::cout << ((confirmSelection == i) ? "> " : "  ") << confirmOptions[i] << "\n";
@@ -423,41 +449,48 @@ bool Inventory::handleItemDetailsAndActions(const std::string& selectedCategory,
                     char confirmInput = (char)_getch();
                     confirmInput = asciiToLower(confirmInput);
 
-                    if (confirmInput == 'i') { return true; } // Exit entire inventory.
-                    if (confirmInput == 'x') { actionMessage = "Trash cancelled.\n"; goto exit_confirm_loop; }
+                    if (confirmInput == 'i') { return true; }
 
                     switch (confirmInput) {
-                    case 'w': confirmSelection = (confirmSelection > 0) ? confirmSelection - 1 : numConfirmOptions - 1; break;
-                    case 's': confirmSelection = (confirmSelection < numConfirmOptions - 1) ? confirmSelection + 1 : 0; break;
+                    case 'w':
+                        confirmSelection = (confirmSelection > 0) ? confirmSelection - 1 : numConfirmOptions - 1;
+                        break;
+                    case 's':
+                        confirmSelection = (confirmSelection < numConfirmOptions - 1) ? confirmSelection + 1 : 0;
+                        break;
                     case 'z':
-                        if (confirmSelection == 0) { // Confirmed "Yes" to trash.
+                        if (confirmSelection == 0) {
                             if (trashItemAction(selectedItemPtr, actualIndex)) {
                                 actionMessage = itemNameForMessage + " has been TRASHED.\n";
-                                itemWasRemovedLocal = true; // Mark item as removed.
+                                itemWasRemovedLocal = true;
                             }
                             else {
                                 actionMessage = "Error: Failed to trash " + itemNameForMessage + ".\n";
                             }
                         }
-                        else { // Confirmed "No" to trash.
+                        else {
                             actionMessage = "Trash cancelled.\n";
                         }
-                        goto exit_confirm_loop; // Exit confirmation loop.
-                    default: break;
+                        confirmLoopRunning = false;
+                        break;
+                    case 'x':
+                        actionMessage = "Trash cancelled.\n";
+                        confirmLoopRunning = false;
+                        break;
+                    default:
+                        break;
                     }
                 }
-            exit_confirm_loop:; // Label for exiting confirmation loop.
                 break;
             }
             }
-            // If item was removed, break from this outer switch to re-evaluate the while loop.
-            if (itemWasRemovedLocal) break;
             break;
         }
-        default: break;
+        default:
+            break;
         }
     }
-    return false; // Normal exit from item details to category list.
+    return false;
 }
 
 // Handles the display and interaction for a specific equipment category.
@@ -469,8 +502,9 @@ bool Inventory::handleEquipmentCategoryItems(const std::string& selectedCategory
     const size_t MAX_CATEGORY_ITEMS = 100; // Max temporary array size for items in a category.
     Equipments* itemsInCategoryArray[MAX_CATEGORY_ITEMS];
     int itemsInCategoryCount = 0;
+    bool Running = true;
 
-    while (true) {
+    while (Running) {
         system("cls"); // Clear screen for category item list.
         std::cout << "--- " << selectedCategory << " Equipments ---\n\n";
 
@@ -478,9 +512,8 @@ bool Inventory::handleEquipmentCategoryItems(const std::string& selectedCategory
         itemsInCategoryCount = getEquipmentsByType(selectedCategory, itemsInCategoryArray, MAX_CATEGORY_ITEMS);
 
         if (itemsInCategoryCount == 0) {
-            // If the category is empty, set a message and return to the higher-level section menu.
             std::cout << "\nPress any key to go back.\n"; // Prompt user to press a key.
-            _getch(); // Wait for user input.
+            placeholderInt = _getch(); // Wait for user input.
             return false;
         }
 
@@ -497,9 +530,6 @@ bool Inventory::handleEquipmentCategoryItems(const std::string& selectedCategory
 
         itemInput = (char)_getch(); // Get user input.
         itemInput = asciiToLower(itemInput); // Convert to lowercase.
-
-        if (itemInput == 'i') { return true; } // Exit entire inventory.
-        if (itemInput == 'x') { break; } // Go back to equipment section menu.
 
         switch (itemInput) {
         case 'w': // Move selection up.
@@ -524,12 +554,20 @@ bool Inventory::handleEquipmentCategoryItems(const std::string& selectedCategory
                 // Error handling if item not found (shouldn't happen if logic is correct).
                 system("cls");
                 std::cout << "\nPress any key to continue.\n"; // Prompt for continuation.
-                _getch(); // Wait for user input.
+                placeholderInt = _getch(); // Wait for user input.
                 break; // Break and let the loop re-evaluate the list.
             }
             break;
         }
-        default: break;
+        case 'x': {
+            Running = false;
+            break;
+        }
+        case 'i': {
+            return true;
+        }
+        default: 
+            break;
         }
     }
     return false; // Normal exit from category list to equipment section.
@@ -544,8 +582,9 @@ bool Inventory::handleItemCategoryItems(const std::string& selectedCategory) {
     const size_t MAX_CATEGORY_ITEMS = 100; // Max temporary array size for items in a category.
     Items* itemsInCategoryArray[MAX_CATEGORY_ITEMS];
     int itemsInCategoryCount = 0;
+    bool Running = true;
 
-    while (true) {
+    while (Running) {
         system("cls"); // Clear screen for category item list.
         std::cout << "--- " << selectedCategory << " Items ---\n\n";
 
@@ -553,9 +592,8 @@ bool Inventory::handleItemCategoryItems(const std::string& selectedCategory) {
         itemsInCategoryCount = getItemsByType(selectedCategory, itemsInCategoryArray, MAX_CATEGORY_ITEMS);
 
         if (itemsInCategoryCount == 0) {
-            // If the category is empty, set a message and return to the higher-level section menu.
             std::cout << "\nPress any key to go back.\n"; // Prompt user to press a key.
-            _getch(); // Wait for user input.
+            placeholderInt = _getch(); // Wait for user input.
             return false;
         }
 
@@ -572,9 +610,6 @@ bool Inventory::handleItemCategoryItems(const std::string& selectedCategory) {
 
         itemInput = (char)_getch(); // Get user input.
         itemInput = asciiToLower(itemInput); // Convert to lowercase.
-
-        if (itemInput == 'i') { return true; } // Exit entire inventory.
-        if (itemInput == 'x') { break; } // Go back to general items section menu.
 
         switch (itemInput) {
         case 'w': // Move selection up.
@@ -599,12 +634,20 @@ bool Inventory::handleItemCategoryItems(const std::string& selectedCategory) {
                 // Error handling if item not found (shouldn't happen if logic is correct).
                 system("cls");
                 std::cout << "\nPress any key to continue.\n"; // Prompt for continuation.
-                _getch(); // Wait for user input.
+                placeholderInt = _getch(); // Wait for user input.
                 break; // Break and let the loop re-evaluate the list.
             }
             break;
         }
-        default: break;
+        case 'x': {
+            Running = false;
+            break;
+        }
+        case 'i': {
+            return true;
+        }
+        default: 
+            break;
         }
     }
     return false; // Normal exit from category list to general items section.
@@ -618,8 +661,9 @@ bool Inventory::handleEquipmentSection() {
     char keyInput;
     const int numCategories = 2; // WEAPON, ARMOR (add more as needed).
     const std::string categories[] = { "WEAPON", "ARMOR" };
+    bool Running = true;
 
-    while (true) {
+    while (Running) {
         system("cls"); // Clear screen for equipment section menu.
         std::cout << "--- Equipment Inventory ---\n\n";
         std::cout << "Equipment Space: " << currentEquipmentSize << "/" << maxEquipmentCapacity << "\n\n";
@@ -632,9 +676,6 @@ bool Inventory::handleEquipmentSection() {
 
         keyInput = (char)_getch(); // Get user input.
         keyInput = asciiToLower(keyInput); // Convert to lowercase.
-
-        if (keyInput == 'i') { return true; } // Exit entire inventory.
-        if (keyInput == 'x') { break; } // Go back to main inventory selection.
 
         switch (keyInput) {
         case 'w': // Move selection up.
@@ -650,7 +691,15 @@ bool Inventory::handleEquipmentSection() {
             }
             break;
         }
-        default: break;
+        case 'x': {
+            Running = false;
+            break;
+        }
+        case 'i': {
+            return true;
+        }
+        default: 
+            break;
         }
     }
     return false; // Normal exit, go back to main inventory selection.
@@ -663,8 +712,9 @@ bool Inventory::handleItemSection() {
     char keyInput;
     const int numCategories = 3; // POTION, MATERIAL (add more as needed).
     const std::string categories[] = { "POTION", "MATERIAL", "MISCELLANEOUS"}; // Example categories.
+    bool Running = true;
 
-    while (true) {
+    while (Running) {
         system("cls"); // Clear screen for general items section menu.
         std::cout << "--- General Items Inventory ---\n\n";
 
@@ -676,9 +726,6 @@ bool Inventory::handleItemSection() {
 
         keyInput = (char)_getch(); // Get user input.
         keyInput = asciiToLower(keyInput); // Convert to lowercase.
-
-        if (keyInput == 'i') { return true; } // Exit entire inventory.
-        if (keyInput == 'x') { break; } // Go back to main inventory selection.
 
         switch (keyInput) {
         case 'w': // Move selection up.
@@ -694,7 +741,15 @@ bool Inventory::handleItemSection() {
             }
             break;
         }
-        default: break;
+        case 'x': {
+            Running = false;
+            break;
+        }
+        case 'i': {
+            return true;
+        }
+        default: 
+            break;
         }
     }
     return false; // Normal exit, go back to main inventory selection.
@@ -714,7 +769,7 @@ void Inventory::openInventory()
         std::cout << "--- Main Inventory Menu ---\n\n";
 
         // Display current item and equipment space.
-        std::cout << "Equipment Space: " << currentEquipmentSize << "/" << maxEquipmentCapacity << "\n\n";
+        std::cout << "Equipment Space: " << currentEquipmentSize << "/" << maxEquipmentCapacity << "\n";
 
         std::cout << "Select a Section:\n";
         for (int i = 0; i < numMainOptions; ++i) {
@@ -724,11 +779,6 @@ void Inventory::openInventory()
 
         keyInput = (char)_getch(); // Get user input.
         keyInput = asciiToLower(keyInput); // Convert to lowercase.
-
-        if (keyInput == 'i') { // 'I' to close inventory entirely from main menu.
-            std::cout << "\nExiting Inventory. Goodbye!\n";
-            return;
-        }
 
         switch (keyInput) {
         case 'w': // Move selection up.
@@ -751,6 +801,10 @@ void Inventory::openInventory()
                 break;
             }
             break;
+        }
+        case 'i': {
+            std::cout << "\nExiting Inventory. Goodbye!\n";
+            return;
         }
         default: break;
         }

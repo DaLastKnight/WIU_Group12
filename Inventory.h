@@ -5,12 +5,6 @@
 #include <iostream>
 #include <cctype>       // For character manipulation (tolower)
 
-// Helper function to convert a character to ASCII lowercase.
-char asciiToLower(char c);
-// Helper function to compare two strings ignoring ASCII case.
-bool equalsIgnoreCaseASCII(const std::string& str1, const std::string& str2);
-
-
 // Manages the player's inventory, separating equipments and general items.
 class Inventory
 {
@@ -27,7 +21,14 @@ public:
     // Adds a general item to the general items inventory.
     void addItem(Items* item);
 
+    // Helper function to convert a character to ASCII lowercase.
+    static char asciiToLower(char c);
+
+    // Helper function to compare two strings ignoring ASCII case.
+    bool equalsIgnoreCaseASCII(const std::string& str1, const std::string& str2) const;
+
 private:
+    int placeholderInt;
     Equipments** equipments; // Array to store pointers to Equipments.
     size_t currentEquipmentSize;    // Current number of equipments.
     size_t maxEquipmentCapacity;    // Maximum capacity for equipments.
