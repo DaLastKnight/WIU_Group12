@@ -36,11 +36,6 @@ void Bow::displayStats() const
     std::cout << "  Price: " << price << " gold\n";
 }
 
-std::string Bow::getName() const
-{
-    return name;
-}
-
 void Bow::weaponSprite(int tier)
 {
     if (tier == 1) {

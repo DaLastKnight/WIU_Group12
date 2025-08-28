@@ -7,7 +7,6 @@ DifficultySelection::DifficultySelection()
 {
 	int difficulty = 0;
 	char difficultyGrade = '-';
-	char key = '-';
 	bool selected = false;
 }
 
@@ -21,9 +20,7 @@ void DifficultySelection::selectDifficulty()
 	difficulty = 1;
 	selected = false;
 
-	const int W_KEY = 'w';
-	const int S_KEY = 's';
-	const int Z_KEY = 'z';
+	int keyInput = 0;
 
 	while (!selected) // Display UI until a choice is made
 	{
@@ -35,23 +32,24 @@ void DifficultySelection::selectDifficulty()
 		std::cout << (difficulty == 2 ? "-> Normal " : "   Normal") << std::endl;
 		std::cout << (difficulty == 3 ? "-> Hard " : "   Hard") << std::endl;
 		std::cout << (difficulty == 4 ? "-> Oblivion " : "   Oblivion") << std::endl;
-		std::cout << "\nUse 'W' and 'S' to navigate, 'Z' to select." << std::endl;
+		std::cout << "\nUse Arrow keys to navigate, 'Z' to select." << std::endl;
 
 
-		key = _getch(); // Read a single character
+		keyInput = _getch(); // Read a single character
 
 		// Use a switch statement to handle key presses
-		switch (key)
+		switch (keyInput)
 		{
-		case W_KEY:
+		case 72:
 			difficulty = (difficulty > 1) ? difficulty - 1 : 4;
 			break;
 
-		case S_KEY:
+		case 80:
 			difficulty = (difficulty < 4) ? difficulty + 1 : 1;
 			break;
 
-		case Z_KEY:
+		case 90:
+		case 122:
 			selected = true; // Set flag to exit the loop
 			break;
 		}

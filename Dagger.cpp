@@ -36,11 +36,6 @@ void Dagger::displayStats() const
     std::cout << "  Price: " << price << " gold\n";
 }
 
-std::string Dagger::getName() const
-{
-    return name;
-}
-
 void Dagger::weaponSprite(int tier)
 {
     if (tier == 1) {

@@ -3,6 +3,7 @@
 #include <iostream>
 #include <conio.h>
 #include <cstdlib>
+#include "Inventory.h"
 #include "Gold.h"
 #include "Weapons.h"
 #include "Sword.h"
@@ -14,8 +15,10 @@
 #include "HealthPotions.h"
 #include "Rope.h"
 
-Shop::Shop(Gold* goldPtr)
+Shop::Shop(Inventory* playerInventory, Gold* goldPtr)
 {
+    inventoryPtr = playerInventory;
+    
     for (int i = 0; i < 3; i++)
     {
         isWeaponBought[i] = false;
@@ -101,22 +104,21 @@ Shop::~Shop()
         delete weaponList[i];
         delete armorList[i];
     }
-    //
-    // Repeat for the other different arrays of items
-    // 
+    
     for (int i = 0; i < 2; i++)
     {
         delete potionList[i];
         delete itemList[i];
     }
 
-    delete goldPtr;
+    inventoryPtr = nullptr;
+    goldPtr = nullptr;
 }
 
 void Shop::handlePurchase(Weapons* weaponPtr, bool& weaponIsBought)
 {
     int currentSelection = 0;
-    char keyInput = '-';
+    int keyInput = 0;
     const int numOptions = 2; // For Yes and No options
 
     while (true) {
@@ -128,18 +130,19 @@ void Shop::handlePurchase(Weapons* weaponPtr, bool& weaponIsBought)
         std::cout << ((currentSelection == 0) ? "> " : "  ") << "Yes\n";
         std::cout << ((currentSelection == 1) ? "> " : "  ") << "No\n";
 
-        std::cout << "\nUse W/S to navigate, Z to select, X to go back.\n";
+        std::cout << "\nUse Arrow keys to navigate, Z to select, X to go back.\n";
 
         keyInput = _getch();
 
         switch (keyInput) {
-        case 'w':
+        case 72:
             currentSelection = (currentSelection > 0) ? currentSelection - 1 : numOptions - 1;
             break;
-        case 's':
+        case 80:
             currentSelection = (currentSelection < numOptions - 1) ? currentSelection + 1 : 0;
             break;
-        case 'z':
+        case 90:
+        case 122:
             if (currentSelection == 0) { // Yes
                 if (goldPtr->getTotalGold() < weaponPtr->getPrice())
                 {
@@ -150,10 +153,33 @@ void Shop::handlePurchase(Weapons* weaponPtr, bool& weaponIsBought)
                 else
                 {
                     system("cls");
-                    goldPtr->setTotalGold(goldPtr->getTotalGold() - weaponPtr->getPrice());
-                    weaponIsBought = true;
-                    std::cout << "\nYou have bought a " << weaponPtr->getName() << "!\n";
-                    std::cout << "Returning to shop menu...\n";
+                    
+                    if (inventoryPtr->getCurrentEquipmentSize() < inventoryPtr->getMaxEquipmentSize())
+                    {
+                        if (weaponPtr->getName() == "Sword")
+                        {
+                            inventoryPtr->addEquipment(new Sword(weaponPtr->getTier()));
+                        }
+                        else if (weaponPtr->getName() == "Dagger")
+                        {
+                            inventoryPtr->addEquipment(new Dagger(weaponPtr->getTier()));
+                        }
+                        else if (weaponPtr->getName() == "Bow")
+                        {
+                            inventoryPtr->addEquipment(new Bow(weaponPtr->getTier()));
+                        }
+
+                        goldPtr->setTotalGold(goldPtr->getTotalGold() - weaponPtr->getPrice());
+                        weaponIsBought = true;
+                        std::cout << "\nYou have bought a " << weaponPtr->getName() << "!\n";
+                        std::cout << "Returning to shop menu...\n";
+                    }
+                    else
+                    {
+                        weaponIsBought = false;
+                        std::cout << "\nYou have insufficient equipment space!\n";
+                    }
+
                     return; // Return to the showChoices() loop
                 }
             }
@@ -163,7 +189,8 @@ void Shop::handlePurchase(Weapons* weaponPtr, bool& weaponIsBought)
                 return;
             }
             break;
-        case 'x':
+        case 88:
+        case 120:
             system("cls");
             return; // Immediately return to the showChoices() loop
             break;
@@ -176,7 +203,7 @@ void Shop::handlePurchase(Weapons* weaponPtr, bool& weaponIsBought)
 void Shop::handlePurchase(Armor* armorPtr, bool& armorIsBought)
 {
     int currentSelection = 0;
-    char keyInput = '-';
+    int keyInput = 0;
     const int numOptions = 2; // For Yes and No options
 
     while (true) {
@@ -188,18 +215,19 @@ void Shop::handlePurchase(Armor* armorPtr, bool& armorIsBought)
         std::cout << ((currentSelection == 0) ? "> " : "  ") << "Yes\n";
         std::cout << ((currentSelection == 1) ? "> " : "  ") << "No\n";
 
-        std::cout << "\nUse W/S to navigate, Z to select, X to go back.\n";
+        std::cout << "\nUse Arrow keys to navigate, Z to select, X to go back.\n";
 
         keyInput = _getch();
 
         switch (keyInput) {
-        case 'w':
+        case 72:
             currentSelection = (currentSelection > 0) ? currentSelection - 1 : numOptions - 1;
             break;
-        case 's':
+        case 80:
             currentSelection = (currentSelection < numOptions - 1) ? currentSelection + 1 : 0;
             break;
-        case 'z':
+        case 90:
+        case 122:
             if (currentSelection == 0) { // Yes
                 if (goldPtr->getTotalGold() < armorPtr->getPrice())
                 {
@@ -209,11 +237,29 @@ void Shop::handlePurchase(Armor* armorPtr, bool& armorIsBought)
                 }
                 else
                 {
-                    system("cls");
-                    goldPtr->setTotalGold(goldPtr->getTotalGold() - armorPtr->getPrice());
-					armorIsBought = true;
-                    std::cout << "\nYou have bought a " << armorPtr->getName() << "!\n";
-                    std::cout << "Returning to shop menu...\n";
+                    if (inventoryPtr->getCurrentEquipmentSize() < inventoryPtr->getMaxEquipmentSize())
+                    {
+                        if (armorPtr->getName() == "LightArmor")
+                        {
+                            inventoryPtr->addEquipment(new LightArmor(armorPtr->getTier()));
+                        }
+                        else if (armorPtr->getName() == "HeavyArmor")
+                        {
+                            inventoryPtr->addEquipment(new HeavyArmor(armorPtr->getTier()));
+                        }
+
+                        system("cls");
+                        goldPtr->setTotalGold(goldPtr->getTotalGold() - armorPtr->getPrice());
+                        armorIsBought = true;
+                        std::cout << "\nYou have bought a " << armorPtr->getName() << "!\n";
+                        std::cout << "Returning to shop menu...\n";
+                    }
+                    else
+                    {
+                        armorIsBought = false;
+                        std::cout << "\nYou have insufficient equipment space!\n";
+                    }
+
                     return; // Return to the showChoices() loop
                 }
             }
@@ -223,7 +269,8 @@ void Shop::handlePurchase(Armor* armorPtr, bool& armorIsBought)
                 return;
             }
             break;
-        case 'x':
+        case 88:
+        case 120:
             system("cls");
             return; // Immediately return to the showChoices() loop
             break;
@@ -236,7 +283,7 @@ void Shop::handlePurchase(Armor* armorPtr, bool& armorIsBought)
 void Shop::handlePurchase(Potions* potionPtr, bool& potionIsBought)
 {
     int currentSelection = 0;
-    char keyInput = '-';
+    int keyInput = 0;
     const int numOptions = 2; // For Yes and No options
 
     while (true) {
@@ -248,18 +295,19 @@ void Shop::handlePurchase(Potions* potionPtr, bool& potionIsBought)
         std::cout << ((currentSelection == 0) ? "> " : "  ") << "Yes\n";
         std::cout << ((currentSelection == 1) ? "> " : "  ") << "No\n";
 
-        std::cout << "\nUse W/S to navigate, Z to select, X to go back.\n";
+        std::cout << "\nUse Arrow keys to navigate, Z to select, X to go back.\n";
 
         keyInput = _getch();
 
         switch (keyInput) {
-        case 'w':
+        case 72:
             currentSelection = (currentSelection > 0) ? currentSelection - 1 : numOptions - 1;
             break;
-        case 's':
+        case 80:
             currentSelection = (currentSelection < numOptions - 1) ? currentSelection + 1 : 0;
             break;
-        case 'z':
+        case 90:
+        case 122:
             if (currentSelection == 0) { // Yes
                 if (goldPtr->getTotalGold() < potionPtr->getPrice())
                 {
@@ -270,6 +318,12 @@ void Shop::handlePurchase(Potions* potionPtr, bool& potionIsBought)
                 else
                 {
                     system("cls");
+                    
+                    if (potionPtr->getName() == "HealthPotion")
+                    {
+                        inventoryPtr->addItem(new HealthPotions(1));
+                    }
+                    
                     goldPtr->setTotalGold(goldPtr->getTotalGold() - potionPtr->getPrice());
                     potionIsBought = true;
                     std::cout << "\nYou have bought a " << potionPtr->getName() << "!\n";
@@ -283,7 +337,8 @@ void Shop::handlePurchase(Potions* potionPtr, bool& potionIsBought)
                 return;
             }
             break;
-        case 'x':
+        case 88:
+        case 120:
             system("cls");
             return; // Immediately return to the showChoices() loop
             break;
@@ -296,7 +351,7 @@ void Shop::handlePurchase(Potions* potionPtr, bool& potionIsBought)
 void Shop::handlePurchase(Items* itemPtr, bool& itemIsBought)
 {
     int currentSelection = 0;
-    char keyInput = '-';
+    int keyInput = 0;
     const int numOptions = 2; // For Yes and No options
 
     while (true) {
@@ -308,18 +363,19 @@ void Shop::handlePurchase(Items* itemPtr, bool& itemIsBought)
         std::cout << ((currentSelection == 0) ? "> " : "  ") << "Yes\n";
         std::cout << ((currentSelection == 1) ? "> " : "  ") << "No\n";
 
-        std::cout << "\nUse W/S to navigate, Z to select, X to go back.\n";
+        std::cout << "\nUse Arrow keys to navigate, Z to select, X to go back.\n";
 
         keyInput = _getch();
 
         switch (keyInput) {
-        case 'w':
+        case 72:
             currentSelection = (currentSelection > 0) ? currentSelection - 1 : numOptions - 1;
             break;
-        case 's':
+        case 80:
             currentSelection = (currentSelection < numOptions - 1) ? currentSelection + 1 : 0;
             break;
-        case 'z':
+        case 90:
+        case 122:
             if (currentSelection == 0) { // Yes
                 if (goldPtr->getTotalGold() < itemPtr->getPrice())
                 {
@@ -330,6 +386,12 @@ void Shop::handlePurchase(Items* itemPtr, bool& itemIsBought)
                 else
                 {
                     system("cls");
+
+                    if (itemPtr->getName() == "Rope")
+                    {
+                        inventoryPtr->addItem(new Rope(1));
+                    }
+
                     goldPtr->setTotalGold(goldPtr->getTotalGold() - itemPtr->getPrice());
                     itemIsBought = true;
                     std::cout << "\nYou have bought a " << itemPtr->getName() << "!\n";
@@ -343,7 +405,8 @@ void Shop::handlePurchase(Items* itemPtr, bool& itemIsBought)
                 return;
             }
             break;
-        case 'x':
+        case 88:
+        case 120:
             system("cls");
             return; // Immediately return to the showChoices() loop
             break;
@@ -356,7 +419,7 @@ void Shop::handlePurchase(Items* itemPtr, bool& itemIsBought)
 void Shop::showChoices(const std::string& itemType)
 {
     int currentSelection = 0;
-    char keyInput = '-';
+    int keyInput = 0;
     const int numOptions = 3; // Total number of menu options
     const int numOptions1 = 2; // For Potion and Rope shop
 
@@ -381,27 +444,29 @@ void Shop::showChoices(const std::string& itemType)
 
             std::cout << "\nCurrent amount of gold: " << goldPtr->getTotalGold() << '\n';
 
-            std::cout << "\nUse W/S to navigate, Z to select, X to exit.\n";
+            std::cout << "\nUse Arrow keys to navigate, Z to select, X to exit.\n";
 
             keyInput = _getch();
 
             switch (keyInput) {
-            case 'w':
+            case 72:
                 currentSelection = (currentSelection > 0) ? currentSelection - 1 : numOptions - 1;
                 system("cls");
                 break;
-            case 's':
+            case 80:
                 currentSelection = (currentSelection < numOptions - 1) ? currentSelection + 1 : 0;
                 system("cls");
                 break;
-            case 'z':
+            case 90:
+            case 122:
                 // Handle the action for the selected option
                 if (!isWeaponBought[currentSelection])
                 {
                     handlePurchase(weaponList[currentSelection], isWeaponBought[currentSelection]);
                 }
                 break;
-            case 'x':
+            case 88:
+            case 120:
                 return; // Exit the function to leave the shop
             default:
                 // Ignore invalid key presses
@@ -431,27 +496,29 @@ void Shop::showChoices(const std::string& itemType)
 
             std::cout << "\nCurrent amount of gold: " << goldPtr->getTotalGold() << '\n';
 
-            std::cout << "\nUse W/S to navigate, Z to select, X to exit.\n";
+            std::cout << "\nUse Arrow keys to navigate, Z to select, X to exit.\n";
 
             keyInput = _getch();
 
             switch (keyInput) {
-            case 'w':
+            case 72:
                 currentSelection = (currentSelection > 0) ? currentSelection - 1 : numOptions - 1;
                 system("cls");
                 break;
-            case 's':
+            case 80:
                 currentSelection = (currentSelection < numOptions - 1) ? currentSelection + 1 : 0;
                 system("cls");
                 break;
-            case 'z':
+            case 90:
+            case 122:
                 // Handle the action for the selected option
                 if (!isArmorBought[currentSelection])
                 {
                     handlePurchase(armorList[currentSelection], isArmorBought[currentSelection]);
                 }
                 break;
-            case 'x':
+            case 88:
+            case 120:
                 return; // Exit the function to leave the shop
             default:
                 // Ignore invalid key presses
@@ -481,27 +548,29 @@ void Shop::showChoices(const std::string& itemType)
 
             std::cout << "\nCurrent amount of gold: " << goldPtr->getTotalGold() << '\n';
 
-            std::cout << "\nUse W/S to navigate, Z to select, X to exit.\n";
+            std::cout << "\nUse Arrow keys to navigate, Z to select, X to exit.\n";
 
             keyInput = _getch();
 
             switch (keyInput) {
-            case 'w':
+            case 72:
                 currentSelection = (currentSelection > 0) ? currentSelection - 1 : numOptions1 - 1;
                 system("cls");
                 break;
-            case 's':
+            case 80:
                 currentSelection = (currentSelection < numOptions1 - 1) ? currentSelection + 1 : 0;
                 system("cls");
                 break;
-            case 'z':
+            case 90:
+            case 122:
                 // Handle the action for the selected option
                 if (!isPotionBought[currentSelection])
                 {
                     handlePurchase(potionList[currentSelection], isPotionBought[currentSelection]);
                 }
                 break;
-            case 'x':
+            case 88:
+            case 120:
                 return; // Exit the function to leave the shop
             default:
                 // Ignore invalid key presses
@@ -531,27 +600,29 @@ void Shop::showChoices(const std::string& itemType)
 
             std::cout << "\nCurrent amount of gold: " << goldPtr->getTotalGold() << '\n';
 
-            std::cout << "\nUse W/S to navigate, Z to select, X to exit.\n";
+            std::cout << "\nUse Arrow keys to navigate, Z to select, X to exit.\n";
 
             keyInput = _getch();
 
             switch (keyInput) {
-            case 'w':
+            case 72:
                 currentSelection = (currentSelection > 0) ? currentSelection - 1 : numOptions1 - 1;
                 system("cls");
                 break;
-            case 's':
+            case 80:
                 currentSelection = (currentSelection < numOptions1 - 1) ? currentSelection + 1 : 0;
                 system("cls");
                 break;
-            case 'z':
+            case 90:
+            case 122:
                 // Handle the action for the selected option
                 if (!isMiscellaneousItemBought[currentSelection])
                 {
                     handlePurchase(itemList[currentSelection], isMiscellaneousItemBought[currentSelection]);
                 }
                 break;
-            case 'x':
+            case 88:
+            case 120:
                 return; // Exit the function to leave the shop
             default:
                 // Ignore invalid key presses
@@ -565,7 +636,7 @@ void Shop::showChoices(const std::string& itemType)
 void Shop::interactShop()
 {
     int currentSelection = 0;
-    char keyInput = '-';
+    int keyInput = 0;
     const int numOptions = 5; // Total number of menu options
 
     while (true) {
@@ -592,21 +663,22 @@ void Shop::interactShop()
         std::cout << ((currentSelection == 3) ? "> " : "  ") << "Miscellaneous\n";
         std::cout << ((currentSelection == 4) ? "> " : "  ") << "Exit Shop\n";
 
-        std::cout << "\nUse W/S to navigate, Z to select, X to exit.\n";
+        std::cout << "\nUse Arrow keys to navigate, Z to select, X to exit.\n";
 
         // Use _getch() to get instant input without pressing Enter
         keyInput = _getch();
 
         switch (keyInput) {
-        case 'w':
+        case 72:
             currentSelection = (currentSelection > 0) ? currentSelection - 1 : numOptions - 1;
             system("cls");
             break;
-        case 's':
+        case 80:
             currentSelection = (currentSelection < numOptions - 1) ? currentSelection + 1 : 0;
             system("cls");
             break;
-        case 'z':
+        case 90:
+        case 122:
             // Handle the action for the selected option
             switch (currentSelection) {
             case 0:
@@ -626,7 +698,8 @@ void Shop::interactShop()
                 return; // Exit the function to leave the shop
             }
             break;
-        case 'x':
+        case 88:
+        case 120:
             std::cout << "\nThank you for visiting the shop! Goodbye!\n";
             return; // Exit the function to leave the shop
         default:

@@ -13,7 +13,7 @@ Dungeon::Dungeon(Game* ptrGame)
 	gridWidth = 15;
 	gridHeight = 15;
 	gamePtr = ptrGame;
-	shopPtr = new Shop(gamePtr->getGoldPtr());
+	shopPtr = new Shop(gamePtr->getInventoryPtr(), gamePtr->getGoldPtr());
 	playerTilePtr = nullptr;
 	world = new char* [gridWidth];
 
@@ -76,7 +76,7 @@ void Dungeon::initWorld()
 		}
 	}
 
-	playerTilePtr = new PlayerTile;
+	playerTilePtr = new PlayerTile(gamePtr->getInventoryPtr());
 	playerTilePtr->setTilePosition(gridWidth, gridHeight, 4, 4);
 }
 

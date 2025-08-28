@@ -36,11 +36,6 @@ void Sword::displayStats() const
     std::cout << "  Price: " << price << " gold\n";
 }
 
-std::string Sword::getName() const
-{
-    return name;
-}
-
 void Sword::weaponSprite(int tier)
 {
     if (tier == 1) {

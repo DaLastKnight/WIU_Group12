@@ -12,7 +12,7 @@
 
 bool SelectClass::confirmSelection() {
     int currentSelection = 0;
-    char keyInput;
+    int keyInput = 0;
     const int numOptions = 2; // For Yes and No options
 
     while (true) {
@@ -24,25 +24,27 @@ bool SelectClass::confirmSelection() {
         std::cout << ((currentSelection == 0) ? "> " : "  ") << "Yes\n";
         std::cout << ((currentSelection == 1) ? "> " : "  ") << "No\n";
 
-        std::cout << "\nUse W/S to navigate, Z to select, X to go back.\n";
+        std::cout << "\nUse Arrow keys to navigate, Z to select, X to go back.\n";
 
         keyInput = _getch();
 
         switch (keyInput) {
-        case 'w':
+        case 72:
             currentSelection = (currentSelection > 0) ? currentSelection - 1 : numOptions - 1;
             break;
-        case 's':
+        case 80:
             currentSelection = (currentSelection < numOptions - 1) ? currentSelection + 1 : 0;
             break;
-        case 'z':
+        case 90:
+        case 122:
             if (currentSelection == 0) { // Yes
                 return true;
             }
             else { // No
                 return false;
             }
-        case 'x':
+        case 88:
+        case 120:
             return false; // Return false to go back to the previous menu
         default:
             break; // Ignore invalid keys
@@ -58,7 +60,7 @@ Player* SelectClass::getPlayer()
 // This is the main class selection menu, also using the new control scheme.
 void SelectClass::chooseClass(Player& player) {
     int currentSelection = 0;
-    char keyInput;
+    int keyInput = 0;
     const int numOptions = 5; // Total number of menu options
 
     while (true) {
@@ -74,18 +76,19 @@ void SelectClass::chooseClass(Player& player) {
         std::cout << ((currentSelection == 3) ? "> " : "  ") << "Cleric/Priest\n";
         std::cout << ((currentSelection == 4) ? "> " : "  ") << "Exit Building\n";
 
-        std::cout << "\nUse W/S to navigate, Z to select, X to exit.\n";
+        std::cout << "\nUse Arrow keys to navigate, Z to select, X to exit.\n";
 
         keyInput = _getch();
 
         switch (keyInput) {
-        case 'w':
+        case 72:
             currentSelection = (currentSelection > 0) ? currentSelection - 1 : numOptions - 1;
             break;
-        case 's':
+        case 80:
             currentSelection = (currentSelection < numOptions - 1) ? currentSelection + 1 : 0;
             break;
-        case 'z':
+        case 90:
+        case 122:
             switch (currentSelection) {
             case 0:
                 system("cls");
@@ -141,7 +144,8 @@ void SelectClass::chooseClass(Player& player) {
                 return; // Exit the function
             }
             break;
-        case 'x':
+        case 88:
+        case 120:
             system("cls");
             std::cout << "\nExiting class selection.\n";
             return; // Exit the function immediately
@@ -154,7 +158,7 @@ void SelectClass::chooseClass(Player& player) {
 bool SelectClass::chooseStarterClass(Player& player)
 {
     int currentSelection = 0;
-    char keyInput;
+    int keyInput = 0;
     const int numOptions = 5; // Total number of menu options
 
     while (true) {
@@ -169,18 +173,19 @@ bool SelectClass::chooseStarterClass(Player& player)
         std::cout << ((currentSelection == 3) ? "> " : "  ") << "Cleric/Priest\n";
         std::cout << ((currentSelection == 4) ? "> " : "  ") << "Exit Game\n";
 
-        std::cout << "\nUse W/S to navigate, Z to select.\n";
+        std::cout << "\nUse Arrow keys to navigate, Z to select.\n";
 
         keyInput = _getch();
 
         switch (keyInput) {
-        case 'w':
+        case 72:
             currentSelection = (currentSelection > 0) ? currentSelection - 1 : numOptions - 1;
             break;
-        case 's':
+        case 80:
             currentSelection = (currentSelection < numOptions - 1) ? currentSelection + 1 : 0;
             break;
-        case 'z':
+        case 90:
+        case 122:
             switch (currentSelection) {
             case 0:
                 system("cls");
@@ -237,7 +242,8 @@ bool SelectClass::chooseStarterClass(Player& player)
                 return false; // Exit the function
             }
             break;
-        case 'x':
+        case 88:
+        case 120:
             system("cls");
             std::cout << "\nExiting game...\n";
             break; // Exit the function immediately

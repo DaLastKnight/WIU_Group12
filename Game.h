@@ -1,5 +1,6 @@
 #pragma once
 #include "Player.h"
+#include "Inventory.h"
 #include "SelectClass.h"
 #include "World.h"
 #include "Town.h"
@@ -15,8 +16,6 @@ private:
 
 	// Stats management
 	Gold* goldPtr;
-	Wood* woodPtr;
-	Stone* stonePtr;
 
 	// World management
 	char currentSymbol;
@@ -26,6 +25,7 @@ private:
 
 	SelectClass selectClass;
 	Player* playerPtr;
+	Inventory* inventoryPtr;
 
 	bool confirmSelection();
 public:
@@ -37,7 +37,6 @@ public:
 	void startGame();
 	void switchWorld(char newSymbol);
 	Gold* getGoldPtr() const;
-	Wood* getWoodPtr() const;
-	Stone* getStonePtr() const;
 	Player* getPlayerPtr() const;
+	Inventory* getInventoryPtr() const;
 };

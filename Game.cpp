@@ -9,54 +9,12 @@
 #include <ctype.h>
 #include <cstdlib>
 
-bool Game::confirmSelection() {
-    int currentSelection = 0;
-    char keyInput;
-    const int numOptions = 2; // For Yes and No options
-
-    while (true) {
-        system("cls"); // Clear the screen
-
-        std::cout << "\nConfirm selection?\n";
-
-        // Print menu options with highlighting
-        std::cout << ((currentSelection == 0) ? "> " : "  ") << "Yes\n";
-        std::cout << ((currentSelection == 1) ? "> " : "  ") << "No\n";
-
-        std::cout << "\nUse W/S to navigate, Z to select, X to go back.\n";
-
-        keyInput = _getch();
-
-        switch (keyInput) {
-        case 'w':
-            currentSelection = (currentSelection > 0) ? currentSelection - 1 : numOptions - 1;
-            break;
-        case 's':
-            currentSelection = (currentSelection < numOptions - 1) ? currentSelection + 1 : 0;
-            break;
-        case 'z':
-            if (currentSelection == 0) { // Yes
-                return true;
-            }
-            else { // No
-                return false;
-            }
-            break;
-        case 'x':
-            return false; // Return false to go back to the previous menu
-        default:
-            break; // Ignore invalid keys
-        }
-    }
-}
-
 Game::Game()
 {
     currentSymbol = 'T';
     playerPtr = nullptr;
+    inventoryPtr = nullptr;
     goldPtr = nullptr;
-    woodPtr = nullptr;
-    stonePtr = nullptr;
     currentWorld = nullptr;
     townPtr = nullptr;
 	dungeonPtr = nullptr;
@@ -65,9 +23,8 @@ Game::Game()
 Game::~Game()
 {
     delete playerPtr;
+    delete inventoryPtr;
     delete goldPtr;
-    delete woodPtr;
-    delete stonePtr;
     delete currentWorld;
     delete townPtr;
     delete dungeonPtr;
@@ -76,13 +33,8 @@ Game::~Game()
 void Game::initGame()
 {
     playerPtr = new Player();
-    goldPtr = new Gold(1000);
-    woodPtr = new Wood(100);
-    stonePtr = new Stone(100);
-    // Filler code
-    woodPtr->setMaterialAmount(100);
-    stonePtr->setMaterialAmount(100);
-
+    goldPtr = new Gold(10000);
+    inventoryPtr = new Inventory(10, 100000, this);
     townPtr = new Town(this);
     dungeonPtr = new Dungeon(this);
     townPtr->initWorld();
@@ -92,7 +44,7 @@ void Game::initGame()
 void Game::startingScreen()
 {
     int currentSelection = 0;
-    char keyInput;
+    int keyInput = 0;
     const int numOptions = 2; // Total number of menu options
 
     HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -135,18 +87,21 @@ void Game::startingScreen()
         std::cout << "|                                                                                                         |\n";
         std::cout << "+---------------------------------------------------------------------------------------------------------+\n";
 
-        std::cout << "\nUse W/S to navigate, Z to select.\n";
+        std::cout << "\nUse Arrow keys to navigate, Z to select.\n";
 
         keyInput = _getch();
 
         switch (keyInput) {
-        case 'w':
+        case 72:
+        case 75:
             currentSelection = (currentSelection > 0) ? currentSelection - 1 : numOptions - 1;
             break;
-        case 's':
+        case 80:
+        case 77:
             currentSelection = (currentSelection < numOptions - 1) ? currentSelection + 1 : 0;
             break;
-        case 'z':
+        case 90:
+        case 122:
             switch (currentSelection) {
             case 0:
                 system("cls");
@@ -176,12 +131,56 @@ void Game::startingScreen()
                 }
                 break;
             }
-        case 'x':
+        case 88:
+        case 120:
             system("cls");
             std::cout << "\nExiting Game.\n";
             return; // Exit the function immediately
         default:
             break; // Ignore invalid key presses
+        }
+    }
+}
+
+bool Game::confirmSelection() {
+    int currentSelection = 0;
+    int keyInput = 0;
+    const int numOptions = 2; // For Yes and No options
+
+    while (true) {
+        system("cls"); // Clear the screen
+
+        std::cout << "\nConfirm selection?\n";
+
+        // Print menu options with highlighting
+        std::cout << ((currentSelection == 0) ? "> " : "  ") << "Yes\n";
+        std::cout << ((currentSelection == 1) ? "> " : "  ") << "No\n";
+
+        std::cout << "\nUse Arrow keys to navigate, Z to select, X to go back.\n";
+
+        keyInput = _getch();
+
+        switch (keyInput) {
+        case 72:
+            currentSelection = (currentSelection > 0) ? currentSelection - 1 : numOptions - 1;
+            break;
+        case 80:
+            currentSelection = (currentSelection < numOptions - 1) ? currentSelection + 1 : 0;
+            break;
+        case 90:
+        case 122:
+            if (currentSelection == 0) { // Yes
+                return true;
+            }
+            else { // No
+                return false;
+            }
+            break;
+        case 88:
+        case 120:
+            return false; // Return false to go back to the previous menu
+        default:
+            break; // Ignore invalid keys
         }
     }
 }
@@ -197,19 +196,14 @@ Gold* Game::getGoldPtr() const
     return goldPtr;
 }
 
-Wood* Game::getWoodPtr() const
-{
-    return woodPtr;
-}
-
-Stone* Game::getStonePtr() const
-{
-    return stonePtr;
-}
-
 Player* Game::getPlayerPtr() const
 {
     return playerPtr;
+}
+
+Inventory* Game::getInventoryPtr() const
+{
+    return inventoryPtr;
 }
 
 void Game::switchWorld(char newSymbol)

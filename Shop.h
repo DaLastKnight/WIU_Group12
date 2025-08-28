@@ -5,11 +5,13 @@
 #include "Potions.h"
 #include "Items.h"
 
+class Inventory;
 class Gold;
 
 class Shop
 {
 private:
+	Inventory* inventoryPtr;
 	Gold* goldPtr;
 	Weapons* weaponList[3];
 	Armor* armorList[3];
@@ -31,7 +33,7 @@ private:
 	void handlePurchase(Items* itemPtr, bool& itemIsBought);
 
 public:
-	Shop(Gold* goldPtr);
+	Shop(Inventory* playerInventory, Gold* goldPtr);
 	~Shop();
 
 	void interactShop();

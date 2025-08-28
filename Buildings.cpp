@@ -12,8 +12,8 @@ Buildings::Buildings(Game* gamePtr)
     buffDescription = "";
     tileSymbol = '?';
     isBuildingUpgraded = false;
-    woodPtr = gamePtr->getWoodPtr();
-    stonePtr = gamePtr->getStonePtr();
+    this->woodPtr = (gamePtr->getInventoryPtr())->getWoodPtr();
+    this->stonePtr = (gamePtr->getInventoryPtr())->getStonePtr();
 }
 
 Buildings::~Buildings()
@@ -24,7 +24,7 @@ Buildings::~Buildings()
 void Buildings::repairMenu()
 {
     int currentSelection = 0;
-    char keyInput = '-';
+    int keyInput = 0;
     const int numOptions = 2; // Total number of menu options
 
     while (true) {
@@ -41,21 +41,22 @@ void Buildings::repairMenu()
         std::cout << ((currentSelection == 0) ? "> " : "  ") << "Yes\n";
         std::cout << ((currentSelection == 1) ? "> " : "  ") << "No\n";
 
-        std::cout << "\nUse W/S to navigate, Z to select, X to exit.\n";
+        std::cout << "\nUse Arrow keys to navigate, Z to select, X to exit.\n";
 
         // Use _getch() to get instant input without pressing Enter
         keyInput = _getch();
 
         switch (keyInput) {
-        case 'w':
+        case 72:
             currentSelection = (currentSelection > 0) ? currentSelection - 1 : numOptions - 1;
             system("cls");
             break;
-        case 's':
+        case 80:
             currentSelection = (currentSelection < numOptions - 1) ? currentSelection + 1 : 0;
             system("cls");
             break;
-        case 'z':
+        case 90:
+        case 122:
             // Handle the action for the selected option
             switch (currentSelection) {
             case 0:
@@ -96,7 +97,8 @@ void Buildings::repairMenu()
                 break;
             }
             break;
-        case 'x':
+        case 88:
+        case 120:
             return; // Exit the function to leave the shop
         default:
             // Ignore invalid key presses
@@ -108,7 +110,8 @@ void Buildings::repairMenu()
 
 void Buildings::showBuildingInfo()
 {
-    char keyInput = '-';
+    // Shows building info once rebuilt
+    int keyInput = 0;
 
     while (true)
     {
@@ -130,8 +133,8 @@ void Buildings::showBuildingInfo()
         keyInput = _getch();
 
         switch (keyInput) {
-        case 'x':
-        case 'X':
+        case 88:
+        case 120:
             return;
             break;
         }
@@ -141,7 +144,7 @@ void Buildings::showBuildingInfo()
 void Buildings::interactBuilding()
 {
     int currentSelection = 0;
-    char keyInput = '-';
+    int keyInput = 0;
     const int numOptions = 3; // Total number of menu options
 
     while (true) {
@@ -166,21 +169,22 @@ void Buildings::interactBuilding()
         std::cout << ((currentSelection == 1) ? "> " : "  ") << "Info\n";
         std::cout << ((currentSelection == 2) ? "> " : "  ") << "Leave\n";
 
-        std::cout << "\nUse W/S to navigate, Z to select, X to exit.\n";
+        std::cout << "\nUse Arrow keys to navigate, Z to select, X to exit.\n";
 
         // Use _getch() to get instant input without pressing Enter
         keyInput = _getch();
 
         switch (keyInput) {
-        case 'w':
+        case 72:
             currentSelection = (currentSelection > 0) ? currentSelection - 1 : numOptions - 1;
             system("cls");
             break;
-        case 's':
+        case 80:
             currentSelection = (currentSelection < numOptions - 1) ? currentSelection + 1 : 0;
             system("cls");
             break;
-        case 'z':
+        case 90:
+        case 122:
             // Handle the action for the selected option
             switch (currentSelection) {
             case 0:
@@ -199,7 +203,8 @@ void Buildings::interactBuilding()
                 break;
             }
             break;
-        case 'x':
+        case 88:
+        case 120:
             return; // Exit the function to leave the shop
         default:
             // Ignore invalid key presses

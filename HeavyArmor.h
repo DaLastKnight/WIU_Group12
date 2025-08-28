@@ -9,7 +9,6 @@ public:
 
 	// For Inventory
 	void displayStats() const;
-	std::string getName() const;
 
 	void armorSprite(int tier);
 };

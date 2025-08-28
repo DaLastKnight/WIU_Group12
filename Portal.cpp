@@ -13,7 +13,7 @@ Portal::Portal()
 char Portal::mainMenu(std::string& currentLocation)
 {
     int currentSelection = 0;
-    char keyInput;
+    int keyInput = 0;
     const int numOptions = 4;
 
     if (currentLocation == "Dungeon")
@@ -39,20 +39,21 @@ char Portal::mainMenu(std::string& currentLocation)
         std::cout << ((currentSelection == 2) ? "> " : "  ") << "Go to Town\n";
         std::cout << ((currentSelection == 3) ? "> " : "  ") << "Exit Portal\n";
 
-        std::cout << "\nUse W/S to navigate, Z to select.\n";
+        std::cout << "\nUse Arrow keys to navigate, Z to select.\n";
 
         keyInput = _getch();
 
         switch (keyInput) {
-        case 'w':
+        case 72:
             currentSelection = (currentSelection > 0) ? currentSelection - 1 : numOptions - 1;
             system("cls");
             break;
-        case 's':
+        case 80:
             currentSelection = (currentSelection < numOptions - 1) ? currentSelection + 1 : 0;
             system("cls");
             break;
-        case 'z':
+        case 90:
+        case 122:
             if (currentSelection == 0) { // Go to Normal Dungeon
                 if (currentSymbol == 'N') {
                     system("cls");
@@ -93,6 +94,10 @@ char Portal::mainMenu(std::string& currentLocation)
                 return currentSymbol;
                 break;
             }
+            break;
+        case 88:
+        case 120:
+            return currentSymbol;
             break;
         default:
             system("cls");
