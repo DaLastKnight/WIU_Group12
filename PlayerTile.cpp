@@ -37,7 +37,7 @@ void PlayerTile::move(int maxGridWidth, int maxGridHeight)
 	while (!isPlayerMoved)
 	{
 		int input = _getch();
-		
+
 		switch (input)
 		{
 		case 72:

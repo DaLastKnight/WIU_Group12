@@ -25,7 +25,7 @@ private:
 	bool isArmorBought[3];
 	bool isPotionBought[2];
 	bool isMiscellaneousItemBought[2];
-	
+
 	void showChoices(const std::string& itemType);
 	void handlePurchase(Weapons* weaponPtr, bool& weaponIsBought);
 	void handlePurchase(Armor* armorPtr, bool& armorIsBought);

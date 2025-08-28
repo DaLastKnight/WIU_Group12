@@ -25,3 +25,18 @@ int Armor::getPrice() const
 {
 	return price;
 }
+
+int Armor::getHealth() const
+{
+	return hp;
+}
+
+int Armor::getDefense() const
+{
+	return def;
+}
+
+int Armor::getSpeed() const
+{
+	return spd;
+}

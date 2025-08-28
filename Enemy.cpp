@@ -34,5 +34,3 @@ Enemy::Enemy(int row, int col, char symbol, int hp, int atk, int def, int spd, c
 
 Enemy::Enemy() {}
 Enemy::Enemy(int row, int col, char symbol) : Entity(row, col, symbol, 0, 0, 0, 0), grade('U') {}
-
-char Enemy::getGrade() const { return grade; }

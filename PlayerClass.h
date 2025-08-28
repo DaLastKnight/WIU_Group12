@@ -1,12 +1,18 @@
 #include "Entity.h"
+#include <string>
 
 #pragma once
 class PlayerClass
 {
+protected:
+	std::string className;
 public:
-	virtual int bonusValue() const = 0;
-	virtual void skill(Entity& entity, int bonusVal) = 0;
+	PlayerClass();
+	PlayerClass(std::string name);
+	virtual int bonusMultiplier() const = 0;
 	virtual void setClassStats(Entity& entity) = 0;
+	//char getClass();
 	virtual ~PlayerClass() = default;
+	std::string getName();
 };
 

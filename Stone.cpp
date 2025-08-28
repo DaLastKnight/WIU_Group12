@@ -2,6 +2,7 @@
 
 Stone::Stone(int stoneCount)
 {
+	this->stoneCount = stoneCount;
 	materialAmount = stoneCount;
 	materialName = "Stone";
 }

@@ -10,7 +10,7 @@ private:
 public:
 	Player* getPlayer();
 
-	SelectClass() : player(nullptr), pc(nullptr) {}
+	/*SelectClass() : player(nullptr), pc(nullptr) {}*/
 
 	void chooseClass(Player& player);
 	bool chooseStarterClass(Player& player);

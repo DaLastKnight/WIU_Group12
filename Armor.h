@@ -16,5 +16,9 @@ public:
     void displayStats() const;
     int getPrice() const;
 
+    int getHealth() const;
+    int getDefense() const;
+    int getSpeed() const;
+
     virtual void armorSprite(int tier) = 0;
 };

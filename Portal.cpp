@@ -13,16 +13,12 @@ Portal::Portal()
 char Portal::mainMenu(std::string& currentLocation)
 {
     int currentSelection = 0;
-    int keyInput = 0;
-    const int numOptions = 4;
+    char keyInput;
+    const int numOptions = 3;
 
     if (currentLocation == "Dungeon")
     {
         currentSymbol = 'N';
-    }
-    else if (currentLocation == "Boss Dungeon")
-    {
-        currentSymbol = 'B';
     }
     else if (currentLocation == "Town")
     {
@@ -35,11 +31,10 @@ char Portal::mainMenu(std::string& currentLocation)
         std::cout << "Where would you like to teleport?\n\n";
 
         std::cout << ((currentSelection == 0) ? "> " : "  ") << "Go to Normal Dungeon\n";
-        std::cout << ((currentSelection == 1) ? "> " : "  ") << "Go to Boss Dungeon\n";
-        std::cout << ((currentSelection == 2) ? "> " : "  ") << "Go to Town\n";
-        std::cout << ((currentSelection == 3) ? "> " : "  ") << "Exit Portal\n";
+        std::cout << ((currentSelection == 1) ? "> " : "  ") << "Go to Town\n";
+        std::cout << ((currentSelection == 2) ? "> " : "  ") << "Exit Portal\n";
 
-        std::cout << "\nUse Arrow keys to navigate, Z to select.\n";
+        std::cout << "\nUse Arrow Keys to navigate, Z to select.\n";
 
         keyInput = _getch();
 
@@ -66,19 +61,7 @@ char Portal::mainMenu(std::string& currentLocation)
                     return 'N';
                 }
             }
-            else if (currentSelection == 1) { // Go to Boss Dungeon
-                if (currentSymbol == 'B') {
-                    system("cls");
-                    std::cout << "You are already in the Boss Dungeon!\n";
-                }
-                else {
-                    //currentLocation = "Boss Dungeon";
-                    system("cls");
-                    std::cout << "Welcome to Boss Dungeon\n";
-                    return 'B';
-                }
-            }
-            else if (currentSelection == 2) { // Go to Town
+            else if (currentSelection == 1) { // Go to Town
                 if (currentSymbol == 'T') {
                     system("cls");
                     std::cout << "You are already in Town!\n";
@@ -90,14 +73,10 @@ char Portal::mainMenu(std::string& currentLocation)
                     return 'T';
                 }
             }
-            else if (currentSelection == 3) {
+            else if (currentSelection == 2) {
                 return currentSymbol;
                 break;
             }
-            break;
-        case 88:
-        case 120:
-            return currentSymbol;
             break;
         default:
             system("cls");

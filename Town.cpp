@@ -57,6 +57,11 @@ Town::~Town()
 {
 	gamePtr = nullptr;
 
+	if (shopPtr != nullptr)
+	{
+		delete shopPtr;
+	}
+
 	for (int i = 0; i < 4; i++)
 	{
 		if (buildingsList[i] != nullptr)
@@ -71,6 +76,7 @@ Town::~Town()
 	}
 
 	delete[] tileList;
+	delete playerTilePtr;
 }
 
 void Town::initWorld()

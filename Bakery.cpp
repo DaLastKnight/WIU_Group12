@@ -9,6 +9,7 @@ Bakery::Bakery(Game* gamePtr) : Buildings(gamePtr)
 	stonePrice = 40;
 	buildingName = "Bakery";
 	buffDescription = "Adds 8spd to base spd.";
+	spd = 8;
 }
 
 void Bakery::printBuilding()

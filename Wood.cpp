@@ -2,6 +2,7 @@
 
 Wood::Wood(int woodCount)
 {
+	this->woodCount = woodCount;
 	materialAmount = woodCount;
 	materialName = "Wood";
 }

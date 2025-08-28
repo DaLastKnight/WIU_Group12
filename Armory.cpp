@@ -9,6 +9,7 @@ Armory::Armory(Game* gamePtr) : Buildings(gamePtr)
 	stonePrice = 130;
 	buildingName = "Blacksmith";
 	buffDescription = "Adds 5def to base def.";
+	def = 5;
 }
 
 void Armory::printBuilding()

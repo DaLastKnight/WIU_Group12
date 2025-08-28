@@ -9,6 +9,7 @@ Hospital::Hospital(Game* gamePtr) : Buildings(gamePtr)
 	stonePrice = 100;
 	buildingName = "Hospital";
 	buffDescription = "Adds 20hp to base hp.";
+	hp = 20;
 }
 
 void Hospital::printBuilding()

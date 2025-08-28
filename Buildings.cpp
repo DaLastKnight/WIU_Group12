@@ -12,19 +12,22 @@ Buildings::Buildings(Game* gamePtr)
     buffDescription = "";
     tileSymbol = '?';
     isBuildingUpgraded = false;
-    this->woodPtr = (gamePtr->getInventoryPtr())->getWoodPtr();
-    this->stonePtr = (gamePtr->getInventoryPtr())->getStonePtr();
+	this->woodPtr = (gamePtr->getInventoryPtr())->getWoodPtr();
+	this->stonePtr = (gamePtr->getInventoryPtr())->getStonePtr();
+    hp = 0;
+    atk = 0;
+    def = 0;
+    spd = 0;
 }
 
 Buildings::~Buildings()
 {
-
 }
 
 void Buildings::repairMenu()
 {
     int currentSelection = 0;
-    int keyInput = 0;
+    char keyInput = '-';
     const int numOptions = 2; // Total number of menu options
 
     while (true) {
@@ -41,7 +44,7 @@ void Buildings::repairMenu()
         std::cout << ((currentSelection == 0) ? "> " : "  ") << "Yes\n";
         std::cout << ((currentSelection == 1) ? "> " : "  ") << "No\n";
 
-        std::cout << "\nUse Arrow keys to navigate, Z to select, X to exit.\n";
+        std::cout << "\nUse W/S to navigate, Z to select, X to exit.\n";
 
         // Use _getch() to get instant input without pressing Enter
         keyInput = _getch();
@@ -110,8 +113,7 @@ void Buildings::repairMenu()
 
 void Buildings::showBuildingInfo()
 {
-    // Shows building info once rebuilt
-    int keyInput = 0;
+    char keyInput = '-';
 
     while (true)
     {
@@ -144,7 +146,7 @@ void Buildings::showBuildingInfo()
 void Buildings::interactBuilding()
 {
     int currentSelection = 0;
-    int keyInput = 0;
+    char keyInput = '-';
     const int numOptions = 3; // Total number of menu options
 
     while (true) {
@@ -169,7 +171,7 @@ void Buildings::interactBuilding()
         std::cout << ((currentSelection == 1) ? "> " : "  ") << "Info\n";
         std::cout << ((currentSelection == 2) ? "> " : "  ") << "Leave\n";
 
-        std::cout << "\nUse Arrow keys to navigate, Z to select, X to exit.\n";
+        std::cout << "\nUse Arrow Keys to navigate, Z to select, X to exit.\n";
 
         // Use _getch() to get instant input without pressing Enter
         keyInput = _getch();
@@ -222,4 +224,24 @@ Position Buildings::getPosition() const
 char Buildings::getTileSymbol() const
 {
     return tileSymbol;
+}
+
+int Buildings::getHealth() const
+{
+    return hp;
+}
+
+int Buildings::getAttack() const
+{
+    return atk;
+}
+
+int Buildings::getDefense() const
+{
+    return def;
+}
+
+int Buildings::getSpeed() const
+{
+    return spd;
 }

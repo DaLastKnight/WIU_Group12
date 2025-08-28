@@ -12,7 +12,7 @@
 
 bool SelectClass::confirmSelection() {
     int currentSelection = 0;
-    int keyInput = 0;
+    char keyInput;
     const int numOptions = 2; // For Yes and No options
 
     while (true) {
@@ -24,7 +24,7 @@ bool SelectClass::confirmSelection() {
         std::cout << ((currentSelection == 0) ? "> " : "  ") << "Yes\n";
         std::cout << ((currentSelection == 1) ? "> " : "  ") << "No\n";
 
-        std::cout << "\nUse Arrow keys to navigate, Z to select, X to go back.\n";
+        std::cout << "\nUse Arrow Keys to navigate, Z to select, X to go back.\n";
 
         keyInput = _getch();
 
@@ -60,7 +60,7 @@ Player* SelectClass::getPlayer()
 // This is the main class selection menu, also using the new control scheme.
 void SelectClass::chooseClass(Player& player) {
     int currentSelection = 0;
-    int keyInput = 0;
+    char keyInput;
     const int numOptions = 5; // Total number of menu options
 
     while (true) {
@@ -76,7 +76,7 @@ void SelectClass::chooseClass(Player& player) {
         std::cout << ((currentSelection == 3) ? "> " : "  ") << "Cleric/Priest\n";
         std::cout << ((currentSelection == 4) ? "> " : "  ") << "Exit Building\n";
 
-        std::cout << "\nUse Arrow keys to navigate, Z to select, X to exit.\n";
+        std::cout << "\nUse Arrow Keys to navigate, Z to select, X to exit.\n";
 
         keyInput = _getch();
 
@@ -158,7 +158,7 @@ void SelectClass::chooseClass(Player& player) {
 bool SelectClass::chooseStarterClass(Player& player)
 {
     int currentSelection = 0;
-    int keyInput = 0;
+    char keyInput;
     const int numOptions = 5; // Total number of menu options
 
     while (true) {
@@ -173,7 +173,7 @@ bool SelectClass::chooseStarterClass(Player& player)
         std::cout << ((currentSelection == 3) ? "> " : "  ") << "Cleric/Priest\n";
         std::cout << ((currentSelection == 4) ? "> " : "  ") << "Exit Game\n";
 
-        std::cout << "\nUse Arrow keys to navigate, Z to select.\n";
+        std::cout << "\nUse Arrow Keys to navigate, Z to select.\n";
 
         keyInput = _getch();
 

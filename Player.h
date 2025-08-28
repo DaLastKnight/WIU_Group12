@@ -12,19 +12,26 @@ private:
 	Armor* equippedArmorPtr;
 
 	char input;
+	int bonusValue;
 
-	bool confirmSelection();
 public:
 	Player();
-	// Player(int row, int col) : Entity(row, col, 'P', health, attack, defense, speed) {}
 
 	void viewCurrentStats();
 	void setClassStats(PlayerClass* playerclass);
-	void useSkill(PlayerClass* playerskill);
+	void useSkill(Entity* target);
 	void equipEquipment(Equipments* equipmentPtr);
 	void unequipEquipment(Equipments* equipmentPtr);
 
-	void attacking() override;
-	//void defending();
+	void attacking(Entity* target) override;
+	void defending(Entity* target) override;
+
+	int getFinalHealth() const;
+	int getFinalAttack() const;
+	int getFinalDefense() const;
+	int getFinalSpeed() const;
+
+	void bonusVal(int amount);
+	void resetVal();
 };
 

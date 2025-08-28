@@ -9,9 +9,9 @@
 #include "Potions.h"
 #include <iostream>
 #include <string>
-#include <conio.h> // For _getch()
-#include <cstdlib> // For system("cls")
-#include <cctype> // For asciiToLower
+#include <conio.h> // _getch()
+#include <cstdlib> // system("cls")
+#include <cctype> // asciiToLower
 
 // Constructor for the Inventory class.
 // Initializes equipment and general item arrays with specified capacities.
@@ -32,16 +32,18 @@ Inventory::Inventory(size_t equipmentCapacity, size_t itemCapacity, Game* ptrToG
         isEquipmentEquipped[i] = false;
     }
 
-    this->gamePtr = ptrToGame;
-    woodPtr = new Wood(1000);
-    stonePtr = new Stone(1000);
-    inventoryOpened = false;
+	// Allocate memory for general item pointers and initialize to nullptr.
+	generalItems = new Items * [maxItemCapacity];
+	for (size_t i = 0; i < maxItemCapacity; ++i) {
+		generalItems[i] = nullptr;
+	}
 
-    // Allocate memory for general item pointers and initialize to nullptr.
-    generalItems = new Items * [maxItemCapacity];
-    for (size_t i = 0; i < maxItemCapacity; ++i) {
-        generalItems[i] = nullptr;
-    }
+    this->gamePtr = ptrToGame;
+    woodPtr = new Wood(10000);
+    stonePtr = new Stone(10000);
+	addItem(woodPtr);
+	addItem(stonePtr);
+    //inventoryOpened = false;
 }
 
 // Destructor for the Inventory class.
@@ -255,25 +257,25 @@ bool Inventory::trashItemAction(Items* item, size_t actualIndex) {
 
 // Action to use a general item.
 // Handles specific logic for potions (consumption).
-std::string Inventory::useItemAction(Items* item, size_t actualIndex) {
-    std::string itemName = item->getName(); // Capture name before potential deletion.
-    std::string message = "You used " + itemName + ".\n";
+bool Inventory::useItemAction(Items* item, size_t actualIndex) {
+	if (item == nullptr) {
+		return false;
+	}
 
-    // Combine the conditions for consumables into a single check.
-    if (equalsIgnoreCaseASCII(item->getType(), "POTION") || equalsIgnoreCaseASCII(item->getType(), "MISCELLANEOUS")) {
-        // If it's a consumable, it's trashed.
-        if (trashItemAction(item, actualIndex)) {
-            message = itemName + " was consumed.\n"; // Use the captured name.
-            return message;
-        }
-        else {
-            message = "Error: Failed to consume " + itemName + ".\n";
-            return message;
-        }
-    }
+	// Check for consumables (Potions, etc.) and trash them.
+	if (equalsIgnoreCaseASCII(item->getType(), "POTION") || equalsIgnoreCaseASCII(item->getType(), "MISCELLANEOUS")) {
+		if (trashItemAction(item, actualIndex)) {
+			// Item was successfully trashed/consumed.
+			return true;
+		}
+		else {
+			// Failed to trash item.
+			return false;
+		}
+	}
 
-    // TODO: Add logic for other item types (e.g., buffs, quest items).
-    return message;
+	// For non-consumable items, assume they are used and exit.
+	return true;
 }
 
 int Inventory::asciiToLower(int c)
@@ -450,7 +452,7 @@ bool Inventory::handleItemDetailsAndActions(const std::string& selectedCategory,
 	bool continueLoop = true;
 
 	// This single flag controls the entire logic for the function.
-	bool hasActions = !equalsIgnoreCaseASCII(selectedCategory, "Material") && !equalsIgnoreCaseASCII(selectedCategory, "Miscellaneous");
+	bool hasActions = !equalsIgnoreCaseASCII(selectedCategory, "Material");
 
 	while (continueLoop) {
 		system("cls");
@@ -501,9 +503,10 @@ bool Inventory::handleItemDetailsAndActions(const std::string& selectedCategory,
 			if (hasActions) {
 				switch (actionSelection) {
 				case 0: { // Use action
-					actionMessage = useItemAction(selectedItemPtr, actualIndex);
-					if (actionMessage.find("consumed") != std::string::npos || actionMessage.find("TRASHED") != std::string::npos) {
-						itemWasRemovedLocal = true;
+					// Call the updated useItemAction and check its return value.
+					if (useItemAction(selectedItemPtr, actualIndex)) {
+						// If the item was successfully used, we return true to close the inventory.
+						return true;
 					}
 					break;
 				}
@@ -800,8 +803,8 @@ bool Inventory::handleEquipmentSection() {
 bool Inventory::handleItemSection() {
     int categorySelection = 0;
     int keyInput;
-    const int numCategories = 3; // POTION, MATERIAL (add more as needed).
-    const std::string categories[] = { "POTION", "MATERIAL", "MISCELLANEOUS"}; // Example categories.
+    const int numCategories = 3; 
+    const std::string categories[] = { "POTION", "MATERIAL", "MISCELLANEOUS"}; // categories.
     bool Running = true;
 
     while (Running) {
@@ -851,12 +854,12 @@ bool Inventory::handleItemSection() {
 // Opens the main inventory menu, allowing selection between equipment and general items sections.
 void Inventory::openInventory()
 {
-    if (!inventoryOpened)
-    {
-        addItem(stonePtr);
-        addItem(woodPtr);
-        inventoryOpened = true;
-    }
+    //if (!inventoryOpened)
+    //{
+    //    addItem(stonePtr);
+    //    addItem(woodPtr);
+    //    inventoryOpened = true;
+    //}
     
     int currentSelection = 0;
     int keyInput;

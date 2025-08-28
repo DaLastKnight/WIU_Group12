@@ -3,17 +3,12 @@
 
 Rogue::Rogue()
 {
+    className = "Rogue";
 }
 
-int Rogue::bonusValue() const
+int Rogue::bonusMultiplier() const
 {
     return 3;
-}
-
-void Rogue::skill(Entity& entity, int bonusVal)
-{
-    std::cout << "You have casted Quick Blade\n";
-    int totalDamage = entity.getAttack() + bonusVal;
 }
 
 void Rogue::setClassStats(Entity& entity)

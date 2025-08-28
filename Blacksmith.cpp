@@ -9,6 +9,7 @@ Blacksmith::Blacksmith(Game* gamePtr) : Buildings(gamePtr)
 	stonePrice = 150;
 	buildingName = "Blacksmith";
 	buffDescription = "Adds 10atk to base atk.";
+	atk = 8;
 }
 
 void Blacksmith::printBuilding()

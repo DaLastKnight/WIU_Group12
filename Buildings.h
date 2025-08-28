@@ -20,11 +20,21 @@ protected:
 	int stonePrice;
 	bool isBuildingUpgraded;
 
+	int hp;
+	int atk;
+	int def;
+	int spd;
+
 	void repairMenu();
 	void showBuildingInfo();
 public:
 	Buildings(Game* gamePtr);
 	~Buildings();
+
+	int getHealth() const;
+	int getAttack() const;
+	int getDefense() const;
+	int getSpeed() const;
 
 	virtual void printBuilding() = 0;
 	void interactBuilding();

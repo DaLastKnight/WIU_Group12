@@ -4,10 +4,8 @@ class Warrior : public PlayerClass
 {
 public:
 	Warrior();
-	Warrior(int hp, int atk, int def, int spd) : PlayerClass() {};
 
-	int bonusValue() const override;
-	void skill(Entity& entity, int bonusVal) override;
+	int bonusMultiplier() const override;
 	void setClassStats(Entity& entity) override;
 };
 

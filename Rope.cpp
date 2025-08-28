@@ -6,7 +6,7 @@ Rope::Rope(int count)
 	itemName = "Rope";
 	ropeCount = count;
 	price = 60;
-	ropeInfo = "Exit the dungeon, regardless of in and out of battle (cannot be used in boss battles)";
+	ropeInfo = "Exit the dungeon, regardless of in and out of battle";
 }
 
 void Rope::displayStats() const

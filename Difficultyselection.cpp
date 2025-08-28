@@ -7,6 +7,7 @@ DifficultySelection::DifficultySelection()
 {
 	int difficulty = 0;
 	char difficultyGrade = '-';
+	char key = '-';
 	bool selected = false;
 }
 
@@ -20,8 +21,6 @@ void DifficultySelection::selectDifficulty()
 	difficulty = 1;
 	selected = false;
 
-	int keyInput = 0;
-
 	while (!selected) // Display UI until a choice is made
 	{
 		system("cls"); // Clear screen (Windows)
@@ -32,13 +31,13 @@ void DifficultySelection::selectDifficulty()
 		std::cout << (difficulty == 2 ? "-> Normal " : "   Normal") << std::endl;
 		std::cout << (difficulty == 3 ? "-> Hard " : "   Hard") << std::endl;
 		std::cout << (difficulty == 4 ? "-> Oblivion " : "   Oblivion") << std::endl;
-		std::cout << "\nUse Arrow keys to navigate, 'Z' to select." << std::endl;
+		std::cout << "\nUse Arrow Keys to navigate, 'Z' to select." << std::endl;
 
 
-		keyInput = _getch(); // Read a single character
+		key = _getch(); // Read a single character
 
 		// Use a switch statement to handle key presses
-		switch (keyInput)
+		switch (key)
 		{
 		case 72:
 			difficulty = (difficulty > 1) ? difficulty - 1 : 4;

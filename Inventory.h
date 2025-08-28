@@ -38,10 +38,13 @@ public:
     // get Equipment Inventory Sizes
     int getCurrentEquipmentSize() const;
     int getMaxEquipmentSize() const;
+	bool handleItemSection();
+
+	bool useItemAction(Items* item, size_t actualIndex);
    
 private:
     int placeholderInt;
-    bool inventoryOpened;
+    //bool inventoryOpened;
     bool* isEquipmentEquipped;
 
     Game* gamePtr;
@@ -70,7 +73,6 @@ private:
 	Equipments* equippedWeapon = nullptr;
 	Equipments* equippedArmor = nullptr;
     bool handleEquipmentSection();
-    bool handleItemSection();
 
     // Handlers for specific item categories within Equipment or General Items.
     bool handleEquipmentCategoryItems(const std::string& selectedCategory);
@@ -89,5 +91,4 @@ private:
     std::string unequipEquipmentAction(Equipments* equipment);
     bool trashEquipmentAction(Equipments* equipment, size_t actualIndex);
     bool trashItemAction(Items* item, size_t actualIndex);
-    std::string useItemAction(Items* item, size_t actualIndex);
 };

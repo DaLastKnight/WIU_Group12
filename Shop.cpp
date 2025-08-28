@@ -18,7 +18,7 @@
 Shop::Shop(Inventory* playerInventory, Gold* goldPtr)
 {
     inventoryPtr = playerInventory;
-    
+
     for (int i = 0; i < 3; i++)
     {
         isWeaponBought[i] = false;
@@ -104,7 +104,7 @@ Shop::~Shop()
         delete weaponList[i];
         delete armorList[i];
     }
-    
+
     for (int i = 0; i < 2; i++)
     {
         delete potionList[i];
@@ -153,7 +153,7 @@ void Shop::handlePurchase(Weapons* weaponPtr, bool& weaponIsBought)
                 else
                 {
                     system("cls");
-                    
+
                     if (inventoryPtr->getCurrentEquipmentSize() < inventoryPtr->getMaxEquipmentSize())
                     {
                         if (weaponPtr->getName() == "Sword")
@@ -231,7 +231,7 @@ void Shop::handlePurchase(Armor* armorPtr, bool& armorIsBought)
             if (currentSelection == 0) { // Yes
                 if (goldPtr->getTotalGold() < armorPtr->getPrice())
                 {
-					armorIsBought = false;
+                    armorIsBought = false;
                     std::cout << "\nYou have insufficient gold!\n";
                     return;
                 }
@@ -318,12 +318,12 @@ void Shop::handlePurchase(Potions* potionPtr, bool& potionIsBought)
                 else
                 {
                     system("cls");
-                    
+
                     if (potionPtr->getName() == "HealthPotion")
                     {
                         inventoryPtr->addItem(new HealthPotions(1));
                     }
-                    
+
                     goldPtr->setTotalGold(goldPtr->getTotalGold() - potionPtr->getPrice());
                     potionIsBought = true;
                     std::cout << "\nYou have bought a " << potionPtr->getName() << "!\n";
