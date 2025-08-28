@@ -270,6 +270,8 @@ void Dungeon::checkInteraction()
 					isInMenu = true;
 					openTreasureChest();
 					isInMenu = false;
+					delete tileList[i];
+					tileList[i] = nullptr;
 					loopWorld();
 				}
 				else if (tileList[i]->getTileSymbol() == 'N')
@@ -450,4 +452,5 @@ void Dungeon::openTreasureChest()
 			break;
 		}
 	}
+
 }
