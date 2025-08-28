@@ -4,7 +4,7 @@
 
 LightArmor::LightArmor(int tier)
 {
-	name = "LightArmor";
+	armorName = "LightArmor";
 	def = 7;
 	hp = 12;
 	spd = 0;
@@ -30,12 +30,17 @@ LightArmor::LightArmor(int tier)
 
 void LightArmor::displayStats() const
 {
-	std::cout << "  Name: " << name << "\n";
+	std::cout << "  Name: " << armorName << "\n";
 	std::cout << "  Type: LightArmor (ARMOR)\n";
 	std::cout << "  Tier: " << tier << "\n";
 	std::cout << "  Base Defense: " << def << "\n";
 	std::cout << "  Base Speed: " << spd << "\n";
 	std::cout << "  Price: " << price << " gold\n";
+}
+
+std::string LightArmor::getName() const
+{
+	return armorName;
 }
 
 void LightArmor::armorSprite(int tier)
@@ -70,5 +75,6 @@ void LightArmor::armorSprite(int tier)
 		std::cout << "     ]::|=#=|::[       \n";
 		std::cout << "    /||#=#=#=#||\\      \n";
 		std::cout << "   `             `     \n";
+		std::cout << "                       \n";
 	}
 }

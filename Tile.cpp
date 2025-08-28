@@ -53,7 +53,7 @@ void Tile::setTileSymbol(char newSymbol)
 void Tile::setTilePosition(int maxGridWidth, int maxGridHeight, int tileRow = 0, int tileColumn = 0)
 {
 	bool validPosition = ((tileRow < maxGridWidth && tileRow >= 0) && (tileColumn < maxGridHeight && tileColumn >= 0));
-	
+
 	if (validPosition)
 	{
 		tilePosition.setRow(tileRow);

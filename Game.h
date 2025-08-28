@@ -1,6 +1,5 @@
 #pragma once
 #include "Player.h"
-#include "Inventory.h"
 #include "SelectClass.h"
 #include "World.h"
 #include "Town.h"
@@ -8,14 +7,18 @@
 #include "Difficultyselection.h"
 #include "Wood.h"
 #include "Stone.h"
+#include "Enemy.h"
 
 class Game
 {
 private:
 	DifficultySelection diffselect;
+	Enemy grade;
 
 	// Stats management
 	Gold* goldPtr;
+	Wood* woodPtr;
+	Stone* stonePtr;
 
 	// World management
 	char currentSymbol;
@@ -25,8 +28,8 @@ private:
 
 	SelectClass selectClass;
 	Player* playerPtr;
-	Inventory* inventoryPtr;
-
+	DifficultySelection* diffPtr;
+	Enemy* enemyPtr;
 	bool confirmSelection();
 public:
 	Game();
@@ -37,6 +40,9 @@ public:
 	void startGame();
 	void switchWorld(char newSymbol);
 	Gold* getGoldPtr() const;
+	Wood* getWoodPtr() const;
+	Stone* getStonePtr() const;
 	Player* getPlayerPtr() const;
-	Inventory* getInventoryPtr() const;
+	DifficultySelection* getDifficultySelector() const;
+	Enemy* getEnemyGrade() const;
 };

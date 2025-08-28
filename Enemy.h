@@ -1,11 +1,13 @@
 #pragma once
 #include "Entity.h"
 #include "Position.h"
+#include <string>
 
 class Enemy : public Entity
 {
 protected:
     char grade;
+    char enemyType;
     int row;
     int col;
 
@@ -18,6 +20,7 @@ public:
     Enemy();
     Enemy(int row, int col, char symbol);
 
-    char getGrade() const;
+    virtual void setEnemyGrade() {};
+    virtual char getEnemyGrade() { return grade; };
 };
 

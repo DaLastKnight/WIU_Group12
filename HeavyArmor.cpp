@@ -4,7 +4,7 @@
 
 HeavyArmor::HeavyArmor(int tier)
 {
-	name = "HeavyArmor";
+	armorName = "HeavyArmor";
 	def = 10;
 	hp = 15;
 	spd = -2;
@@ -28,12 +28,17 @@ HeavyArmor::HeavyArmor(int tier)
 
 void HeavyArmor::displayStats() const
 {
-	std::cout << "  Name: " << name << "\n";
+	std::cout << "  Name: " << armorName << "\n";
 	std::cout << "  Type: HeavyArmor (ARMOR)\n";
 	std::cout << "  Tier: " << tier << "\n";
 	std::cout << "  Base Defense: " << def << "\n";
 	std::cout << "  Base Speed: " << spd << "\n";
 	std::cout << "  Price: " << price << " gold\n";
+}
+
+std::string HeavyArmor::getName() const
+{
+	return armorName;
 }
 
 void HeavyArmor::armorSprite(int tier)
@@ -74,5 +79,6 @@ void HeavyArmor::armorSprite(int tier)
 		std::cout << "        /###|_|###\\        \n";
 		std::cout << "       /  /     \\  \\       \n";
 		std::cout << "      `  `       `  `      \n";
+		std::cout << "                           \n";
 	}
 }

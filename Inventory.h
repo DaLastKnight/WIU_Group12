@@ -1,26 +1,24 @@
 #pragma once
 #include "Equipments.h" // For Equipments array
 #include "Items.h"      // For Items array
-#include "Wood.h"
-#include "Stone.h"
 #include <string>
 #include <iostream>
 #include <cctype>       // For character manipulation (tolower)
 
-class Game;
+// Helper function to convert a character to ASCII lowercase.
+char asciiToLower(char c);
+// Helper function to compare two strings ignoring ASCII case.
+bool equalsIgnoreCaseASCII(const std::string& str1, const std::string& str2);
+
 
 // Manages the player's inventory, separating equipments and general items.
 class Inventory
 {
 public:
     // Constructor with customizable capacities for equipment and general items.
-    Inventory(size_t equipmentCapacity = 5, size_t itemCapacity = 100000, Game* gamePtr = nullptr);
+    Inventory(size_t equipmentCapacity = 5, size_t itemCapacity = 100000);
     // Destructor to free dynamically allocated memory.
     ~Inventory();
-
-    Wood* getWoodPtr() const;
-    Stone* getStonePtr() const;
-    
 
     // Opens the main inventory menu.
     void openInventory();
@@ -29,25 +27,7 @@ public:
     // Adds a general item to the general items inventory.
     void addItem(Items* item);
 
-    // Helper function to convert a character to ASCII lowercase.
-    static int asciiToLower(int c);
-
-    // Helper function to compare two strings ignoring ASCII case.
-    bool equalsIgnoreCaseASCII(const std::string& str1, const std::string& str2) const;
-
-    // get Equipment Inventory Sizes
-    int getCurrentEquipmentSize() const;
-    int getMaxEquipmentSize() const;
-   
 private:
-    int placeholderInt;
-    bool inventoryOpened;
-    bool* isEquipmentEquipped;
-
-    Game* gamePtr;
-    Wood* woodPtr;
-    Stone* stonePtr;
-
     Equipments** equipments; // Array to store pointers to Equipments.
     size_t currentEquipmentSize;    // Current number of equipments.
     size_t maxEquipmentCapacity;    // Maximum capacity for equipments.
@@ -55,6 +35,8 @@ private:
     Items** generalItems;   // Array to store pointers to general Items.
     size_t currentItemSize;     // Current number of general items.
     size_t maxItemCapacity;     // Maximum capacity for general items.
+
+    std::string lastActionMessage; // Stores message from last inventory action.
 
     // Finds the actual index of an equipment pointer in the equipments array.
     size_t findEquipmentIndex(Equipments* eqPtr) const;
@@ -67,8 +49,6 @@ private:
     Items* removeGeneralItem(size_t index);
 
     // Handlers for the main sections of the inventory (Equipments, Items).
-	Equipments* equippedWeapon = nullptr;
-	Equipments* equippedArmor = nullptr;
     bool handleEquipmentSection();
     bool handleItemSection();
 

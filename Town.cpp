@@ -21,7 +21,7 @@ Town::Town(Game* ptrGame)
 	gridHeight = 10;
 
 	gamePtr = ptrGame;
-	shopPtr = new Shop(gamePtr->getInventoryPtr(), gamePtr->getGoldPtr());
+	shopPtr = new Shop(gamePtr->getGoldPtr());
 
 	for (int i = 0; i < 4; i++)
 	{
@@ -117,7 +117,7 @@ void Town::initWorld()
 		}
 	}
 
-	playerTilePtr = new PlayerTile(gamePtr->getInventoryPtr());
+	playerTilePtr = new PlayerTile;
 	playerTilePtr->setTilePosition(gridWidth, gridHeight, 4, 4);
 }
 

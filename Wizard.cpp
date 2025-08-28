@@ -3,17 +3,12 @@
 
 Wizard::Wizard()
 {
+    className = "Wizard";
 }
 
-int Wizard::bonusValue() const
+int Wizard::bonusMultiplier() const
 {
     return 4;
-}
-
-void Wizard::skill(Entity& entity, int bonusVal)
-{
-    std::cout << "You have casted Greater Fireball\n";
-    int totalDamage = entity.getAttack() + bonusVal;
 }
 
 void Wizard::setClassStats(Entity& entity)

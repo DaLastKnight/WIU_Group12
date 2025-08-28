@@ -1,15 +1,11 @@
 #pragma once
 #include "Tile.h"
-
-class Inventory;
-
 class PlayerTile : public Tile
 {
 private:
-	Inventory* inventoryPtr;
 	bool isPlayerMoved;
 public:
-	PlayerTile(Inventory* playerInventory);
+	PlayerTile();
 	~PlayerTile();
 	void move(int maxGridWidth, int maxGridHeight);
 };

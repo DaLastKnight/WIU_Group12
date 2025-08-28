@@ -12,5 +12,6 @@ public:
 private:
 	int difficulty;
 	char difficultyGrade;
+	char key;
 	bool selected;
 };

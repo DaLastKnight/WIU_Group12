@@ -3,6 +3,8 @@
 
 class Entity
 {
+private:
+	int num;
 protected:
 	Position pos;
 	char type;
@@ -27,6 +29,7 @@ public:
 
 	char getType() const;
 
-	virtual void attacking() = 0;
+	virtual void attacking(Entity* target) {};
+	virtual void defending(Entity* target) {};
 };
 
