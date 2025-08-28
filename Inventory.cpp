@@ -39,8 +39,8 @@ Inventory::Inventory(size_t equipmentCapacity, size_t itemCapacity, Game* ptrToG
 	}
 
     this->gamePtr = ptrToGame;
-    woodPtr = new Wood(10000);
-    stonePtr = new Stone(10000);
+    woodPtr = new Wood(0);
+    stonePtr = new Stone(0);
 	addItem(woodPtr);
 	addItem(stonePtr);
     //inventoryOpened = false;
@@ -914,4 +914,5 @@ void Inventory::openInventory()
             break;
         }
     }
+
 }
